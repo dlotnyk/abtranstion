@@ -10,6 +10,7 @@ import numpy as np
 import sqlite3 as sql
 import datetime
 import inspect
+import os
 def time_this(original_function):  
     '''Measures the processing time. Decorator'''
     @wraps(original_function)                      
@@ -69,25 +70,103 @@ class abdata():
     @my_logger
     @time_this
     def import_fun(self):
-        '''import needed data from dat files'''
+        '''import needed data from dat files
+        time/date [0] [1]; unitime [2]; Q [6]; Tmc [13]'''
         path="c:\\Users\\JMP\\Documents\\Thermal Conductivity\\Backup\\2019JAN\\20190102\\HEC2p2mK.dat"
+        path1="c:\\Users\\JMP\\Documents\\Thermal Conductivity\\Backup\\2019JAN\\20190102\\IC2p2mK.dat"
+        path2="c:\\Users\\JMP\\Documents\\Thermal Conductivity\\Backup\\2019JAN\\20190102\\pressure_log20190102.dat"
+        ps=path.split('\\')
+        ls=len(ps[-1])
+        print(ps[-1])
+        print(path[0:-ls])
 #        data=np.genfromtxt(path, unpack=True, skip_header=1, usecols = (4, 5, 2, 6, 13, 7))
-        data=np.genfromtxt(path, unpack=True, skip_header=1)
-        print(data[0][0],data[1][0],data[2][0])
-        with open(path,'r') as f:
-            line=f.readline()
-            line=f.readline()
-            d=line.split()
-            mm,dd,yy=d[0].split('/')
-            print("year {}, month {}, day {}".format(yy,mm,dd))
-            hh,mins,ss=d[1].split(':')
-            print("hour {}: min {}: sec {}".format(hh,mins,ss))
-            t1,t2=str(datetime.datetime.now()).split()
-            print(t2)
-            a=datetime.datetime(int('20'+yy),int(mm),int(dd),int(hh),int(mins),int(ss),0)
-            print(a)
+#        data=np.genfromtxt(path, unpack=True, skip_header=1)
+#        print(data[0][0],data[1][0],data[2][0])
+        with open(path,'r') as f, open(path1,'r') as f1, open(path2,'r') as f2:
+            next(f) # skip first
+            next(f1)
+            next(f2)
+            d2=next(f2).split()
+            press=float(d2[3])
+            for line, line1 in zip(f,f1):
+                d=line.split()
+                d1=line.split()
+                mm,dd,yy,hh,mins,ss=self.__gettime(d[0],d[1])
+                mm1,dd1,yy1,hh1,mins1,ss1=self.__gettime(d2[0],d2[1])
+                a=datetime.datetime(int('20'+yy),int(mm),int(dd),int(hh),int(mins),int(ss),0)
+                a1=datetime.datetime(int('20'+yy1),int(mm1),int(dd1),int(hh1),int(mins1),int(ss1),0)
+                if a1<a:
+                    try:
+                        d2=next(f2).split()
+                        mm1,dd1,yy1,hh1,mins1,ss1=self.__gettime(d2[0],d2[1])
+                        press=float(d2[3])
+                    except StopIteration:
+                        press=press
+            self.__update_table('my_t',(a,int(d[2]),float(d[6]),float(d1[6]),float(d[13]),press))
+            self.cnx.commit()
+            
+#                print(a, int(d[2]), float(d[6]), float(d[13]),float(d1[6]),press)
+#-------------------------------------------------------------    
+    @my_logger
+    @time_this
+    def find_files(self):
+        '''find dat files in directory'''
+        dir1="c:\\Users\\JMP\\Documents\\Thermal Conductivity\\Backup\\2019JAN\\20190102\\"
+        for root,dirs,files in os.walk(dir1):
+            ll=[os.path.join(root,file) for file in files if file.endswith(".dat")]
+#        print(ll)
+        return ll
+#-------------------------------------------------------------    
+    
+    def __gettime(self,date,time):
+        '''get time in datetime from strings date and time'''
+        mm,dd,yy=date.split('/')
+        hh,mins,ss=time.split(':')
+        return mm,dd,yy,hh,mins,ss
+#-------------------------------------------------------------    
+    @my_logger
+    @time_this
+    def create_table(self,db_name):   
+        '''Create table in local database'''
+        query=("CREATE TABLE IF NOT EXISTS {} ("
+#               "id integer PRIMARY KEY, "
+               "date text NOT NULL, "
+               "uni_time integer NOT NULL, "
+               "Q1 real NOT NULL, "
+               "Q2 real NOT NULL, "
+               "Tmc real, "
+               "pressure real NOT NULL);".format(db_name))
+        self.cursor.execute(query)
+#-------------------------------------------------------------    
+    @my_logger
+    @time_this
+    def drop_table(self,db_name):  
+        '''drop db_name table'''
+        query=("DROP TABLE {}".format(db_name))
+        self.cursor.execute(query)
+#-------------------------------------------------------------    
+    def __update_table(self,db_name,values):
+        '''set a new values to the table'''
+        print(len(values))
+        query="INSERT INTO %s (date, uni_time, Q1, Q2, Tmc, pressure) VALUES (?, ?, ?, ?, ?, ?) " % db_name
+#        print(query)
+        self.cursor.execute(query,values)
+        
+    def select_vals(self,tb_name):
+        '''select all values'''
+        query="SELECT * FROM %s WHERE 1" % tb_name
+        self.cursor.execute(query)
+        data=self.cursor.fetchall()
+        print(data)
+        
+        
             
 conf_loc='ab_data.db'
 A=abdata(conf_loc)
+
+#files=A.find_files()
+A.drop_table('my_t')
+A.create_table('my_t')
 A.import_fun()
+A.select_vals('my_t')
 A.close_f()
