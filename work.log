@@ -1,4 +1,574 @@
-INFO:root: 2019-01-14 14:02:33 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+INFO:root: 2019-01-15 12:46:05 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
 
-INFO:root: 2019-01-14 14:02:33 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+INFO:root: 2019-01-15 12:46:05 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 12:46:05 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 12:46:05 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 12:54:54 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-15 12:54:54 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 13:22:40 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-15 13:22:40 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 13:22:50 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 13:22:50 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 13:26:55 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-15 13:26:55 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 13:27:04 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 13:27:04 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 13:27:17 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-15 13:27:17 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 13:27:27 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 13:27:27 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 13:59:00 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-15 13:59:00 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 13:59:09 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 13:59:09 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-15 13:59:09 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:01:28 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:01:28 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:01:38 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:01:38 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:01:45 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:01:45 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:01:45 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:01:45 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:02:49 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:02:49 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:02:49 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:02:49 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:03:49 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:03:49 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:03:49 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:03:49 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:03:49 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:07:02 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:07:02 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:07:03 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:07:03 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:07:03 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:07:03 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:13:13 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:13:13 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:13:13 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:13:13 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:13:13 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:13:13 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:37:12 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:37:12 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:38:27 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:38:27 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:38:27 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:38:27 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:38:58 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:38:58 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:38:59 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:38:59 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:39:53 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:39:53 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:39:53 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:39:53 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:40:24 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:40:24 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:40:24 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:40:24 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:49:19 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:49:19 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:49:19 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:49:19 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:50:05 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:50:05 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:50:05 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:50:05 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:50:12 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:50:12 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:50:12 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:50:12 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:52:38 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:52:38 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:52:38 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-15 14:52:38 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:01:30 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:01:30 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:01:31 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:01:31 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:02:44 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:02:44 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:02:44 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:02:44 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:05:01 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:05:01 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:05:01 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:05:01 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:17:02 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:17:02 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:17:02 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:17:02 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:17:29 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:17:29 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:17:29 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:17:29 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:18:12 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:18:12 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:18:12 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:18:12 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:18:29 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:18:29 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:18:29 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:18:29 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:18:41 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:18:41 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:18:41 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:18:41 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:19:15 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:19:15 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:19:15 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:19:15 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:21:20 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:21:20 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:21:21 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:21:21 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:21:46 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:21:46 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:21:46 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:21:46 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:21:46 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:22:32 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:22:32 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:22:33 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:22:33 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:22:33 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:32:08 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:32:08 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:32:08 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:32:08 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:32:08 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:54:06 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:54:06 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:54:06 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:54:06 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:54:08 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:54:49 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:54:49 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:54:49 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:54:49 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 15:54:50 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 16:01:39 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-15 16:01:39 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-15 16:01:39 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-15 16:01:39 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 16:01:39 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-15 16:36:43 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-15 16:36:43 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-15 16:36:43 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-15 16:36:44 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-16 10:29:45 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-16 10:29:49 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-16 10:30:00 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-16 10:30:03 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-16 10:30:23 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-16 10:48:39 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-16 10:48:39 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-16 10:48:39 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-16 10:48:40 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-16 10:48:40 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-16 11:04:31 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-16 11:04:31 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-16 11:04:31 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-16 11:04:31 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-16 11:05:22 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-16 11:05:22 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-16 11:05:22 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-16 11:05:22 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-16 11:05:22 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-16 11:12:22 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-16 11:12:22 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-16 11:12:23 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-16 11:12:23 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-16 11:12:23 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-16 11:12:29 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-16 11:12:29 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-16 11:12:30 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-16 11:12:30 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-16 11:16:26 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-16 11:16:26 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-16 11:16:26 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-16 11:16:27 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-16 11:18:47 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-16 11:18:47 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-16 11:18:47 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-16 11:18:47 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-16 11:23:39 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-16 11:23:39 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-16 11:23:39 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-16 11:23:39 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-16 11:30:06 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-16 11:30:06 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-16 11:30:06 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-16 11:30:06 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:16:30 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:16:30 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:16:31 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:16:31 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:16:31 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:16:51 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:16:51 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:16:51 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:16:51 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:16:52 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:20:07 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:20:07 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:20:07 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:20:07 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:20:37 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:20:37 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:20:37 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:20:38 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:29:03 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:29:03 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:29:03 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:29:03 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:29:43 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:29:43 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:29:43 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:29:43 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:32:05 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:32:05 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:32:05 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:32:05 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:35:29 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:35:29 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:35:29 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:35:29 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:35:54 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:35:54 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:35:54 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:35:54 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:36:12 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:36:12 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:36:12 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:36:12 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:36:38 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:36:38 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:36:38 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:36:38 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:37:07 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:37:07 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:37:07 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:37:07 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:40:29 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:40:29 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:40:29 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:40:29 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:41:34 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:41:34 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:41:35 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:41:35 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:41:39 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:42:59 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:42:59 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:42:59 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:42:59 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:43:01 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:43:16 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:43:16 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:43:16 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:43:16 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:43:18 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:44:18 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:44:18 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:44:18 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:44:18 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:44:22 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:44:57 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:44:57 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:44:57 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:44:57 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:56:05 Ran with args: (abdata, db: ab_data.db, 'ab_data.db'), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:56:05 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:56:05 Ran with args: (abdata, db: ab_data.db, 'my_t'), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:56:05 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
+
+INFO:root: 2019-01-16 15:56:06 Ran with args: (abdata, db: ab_data.db,), and kwargs: {} 
 
