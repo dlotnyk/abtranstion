@@ -71,14 +71,15 @@ class abdata():
     @time_this
     def import_fun(self):
         '''import needed data from dat files
-        time/date [0] [1]; unitime [2]; Q [6]; Tmc [13]'''
+        time/date [0] [1]; unitime [2]; Q [6]; Tmc [13]
+        update an sql table'''
         path="c:\\Users\\JMP\\Documents\\Thermal Conductivity\\Backup\\2019JAN\\20190102\\HEC2p2mK.dat"
         path1="c:\\Users\\JMP\\Documents\\Thermal Conductivity\\Backup\\2019JAN\\20190102\\IC2p2mK.dat"
         path2="c:\\Users\\JMP\\Documents\\Thermal Conductivity\\Backup\\2019JAN\\20190102\\pressure_log20190102.dat"
         ps=path.split('\\')
         ls=len(ps[-1])
-        print(ps[-1])
-        print(path[0:-ls])
+#        print(ps[-1])
+#        print(path[0:-ls])
 #        data=np.genfromtxt(path, unpack=True, skip_header=1, usecols = (4, 5, 2, 6, 13, 7))
 #        data=np.genfromtxt(path, unpack=True, skip_header=1)
 #        print(data[0][0],data[1][0],data[2][0])
@@ -90,7 +91,7 @@ class abdata():
             press=float(d2[3])
             for line, line1 in zip(f,f1):
                 d=line.split()
-                d1=line.split()
+                d1=line1.split()
                 mm,dd,yy,hh,mins,ss=self.__gettime(d[0],d[1])
                 mm1,dd1,yy1,hh1,mins1,ss1=self.__gettime(d2[0],d2[1])
                 a=datetime.datetime(int('20'+yy),int(mm),int(dd),int(hh),int(mins),int(ss),0)
@@ -102,10 +103,9 @@ class abdata():
                         press=float(d2[3])
                     except StopIteration:
                         press=press
-            self.__update_table('my_t',(a,int(d[2]),float(d[6]),float(d1[6]),float(d[13]),press))
+                self.__update_table('my_t',(a,int(d[2]),float(d[6]),float(d1[6]),float(d[13]),press))
             self.cnx.commit()
             
-#                print(a, int(d[2]), float(d[6]), float(d[13]),float(d1[6]),press)
 #-------------------------------------------------------------    
     @my_logger
     @time_this
@@ -114,7 +114,6 @@ class abdata():
         dir1="c:\\Users\\JMP\\Documents\\Thermal Conductivity\\Backup\\2019JAN\\20190102\\"
         for root,dirs,files in os.walk(dir1):
             ll=[os.path.join(root,file) for file in files if file.endswith(".dat")]
-#        print(ll)
         return ll
 #-------------------------------------------------------------    
     
@@ -147,26 +146,38 @@ class abdata():
 #-------------------------------------------------------------    
     def __update_table(self,db_name,values):
         '''set a new values to the table'''
-        print(len(values))
+#        print(len(values))
         query="INSERT INTO %s (date, uni_time, Q1, Q2, Tmc, pressure) VALUES (?, ?, ?, ?, ?, ?) " % db_name
 #        print(query)
         self.cursor.execute(query,values)
-        
+#-------------------------------------------------------------            
     def select_vals(self,tb_name):
         '''select all values'''
         query="SELECT * FROM %s WHERE 1" % tb_name
         self.cursor.execute(query)
         data=self.cursor.fetchall()
-        print(data)
-        
-        
-            
+        res=self._removeNull(data)
+#        print(data)
+        return res
+#-------------------------------------------------------------    
+    def _removeNull(self,res):
+        '''remove nulls and convert it to pyhonic nan's'''
+#        res1=np.transpose(res)
+        kerneldt=np.dtype({'names':['time','uni_t','Q1','Q2','Tmc','pressure'],'formats':['U20',float,float,float,float,float]})
+        dat=np.zeros(np.shape(res)[0],dtype=kerneldt)
+        assert len(dat) > 0, "no data were taken from SELECT"
+        for ind,x in enumerate(res):
+            for y in x:
+                if y is None:
+                    y=np.nan
+            dat[ind]=x
+        return dat       
+#-------------main--------------------------------------------            
 conf_loc='ab_data.db'
 A=abdata(conf_loc)
-
 #files=A.find_files()
 A.drop_table('my_t')
 A.create_table('my_t')
 A.import_fun()
-A.select_vals('my_t')
+data1=A.select_vals('my_t')
 A.close_f()
