@@ -39,16 +39,20 @@ def my_logger(orig_func):
                 ' {} Ran with args: {}, and kwargs: {} \n'.format(vrema, args,kwargs))
         return orig_func(*args, **kwargs) 
     return wrapper 
-    
+#-------------------------------------------------------------
+#-------------------------------------------------------------    
 class abdata():
     '''read from fies, create a sql database from date, universal time, Q, Tmc and pressure'''
+    
+    test_path="c:\\dima\\proj\\ab_trans\\20181201\\"
+    
     def __init__(self,conf):
         self.conf=conf
         self.connect_loc(conf)
-        
 #-------------------------------------------------------------
     def __repr__(self):
         return "{}, db: {}".format(self.__class__.__name__,self.conf)
+#-------------------------------------------------------------    
     @my_logger  
     @time_this 
     def connect_loc(self,conf):   
@@ -105,18 +109,16 @@ class abdata():
                         press=press
                 self.__update_table('my_t',(a,int(d[2]),float(d[6]),float(d1[6]),float(d[13]),press))
             self.cnx.commit()
-            
 #-------------------------------------------------------------    
     @my_logger
     @time_this
     def find_files(self):
         '''find dat files in directory'''
-        dir1="c:\\Users\\JMP\\Documents\\Thermal Conductivity\\Backup\\2019JAN\\20190102\\"
-        for root,dirs,files in os.walk(dir1):
-            ll=[os.path.join(root,file) for file in files if file.endswith(".dat")]
+#        dir1="c:\\Users\\JMP\\Documents\\Thermal Conductivity\\Backup\\2019JAN\\20190102\\"
+        for root,dirs,files in os.walk(self.test_path):
+            ll={os.path.join(root,file) for file in files if file.endswith(".dat")}
         return ll
 #-------------------------------------------------------------    
-    
     def __gettime(self,date,time):
         '''get time in datetime from strings date and time'''
         mm,dd,yy=date.split('/')
@@ -146,9 +148,7 @@ class abdata():
 #-------------------------------------------------------------    
     def __update_table(self,db_name,values):
         '''set a new values to the table'''
-#        print(len(values))
         query="INSERT INTO %s (date, uni_time, Q1, Q2, Tmc, pressure) VALUES (?, ?, ?, ?, ?, ?) " % db_name
-#        print(query)
         self.cursor.execute(query,values)
 #-------------------------------------------------------------            
     def select_vals(self,tb_name):
@@ -163,7 +163,7 @@ class abdata():
     def _removeNull(self,res):
         '''remove nulls and convert it to pyhonic nan's'''
 #        res1=np.transpose(res)
-        kerneldt=np.dtype({'names':['time','uni_t','Q1','Q2','Tmc','pressure'],'formats':['U20',float,float,float,float,float]})
+        kerneldt=np.dtype({'names':['time','uni_t','Q1','Q2','Tmc','pressure'],'formats':['U20',np.float32,np.float32,np.float32,np.float32,np.float32]})
         dat=np.zeros(np.shape(res)[0],dtype=kerneldt)
         assert len(dat) > 0, "no data were taken from SELECT"
         for ind,x in enumerate(res):
@@ -172,12 +172,41 @@ class abdata():
                     y=np.nan
             dat[ind]=x
         return dat       
-#-------------main--------------------------------------------            
-conf_loc='ab_data.db'
-A=abdata(conf_loc)
-#files=A.find_files()
-A.drop_table('my_t')
-A.create_table('my_t')
-A.import_fun()
-data1=A.select_vals('my_t')
-A.close_f()
+    #-------------------------------------------------------------            
+    def find_hec(self,files):
+        '''find all HEC and IC files. combine them into single HEC and IC. find a path with pressure'''
+        hec_f=self.test_path+"HEC_combine.dat"
+        ic_f=self.test_path+"IC_combine.dat"
+        path_press=sorted([k.split('\\')[-1] for k in files if k.split('\\')[-1][0:3]=='pre'])
+        hec=sorted([jj.split('\\')[-1] for jj in files if jj.split('\\')[-1][0:3]=='HEC'
+                    and jj.split('\\')[-1] != "HEC_combine.dat"])
+        ic=sorted([ii.split('\\')[-1] for ii in files if ii.split('\\')[-1][0:2]=='IC'
+                   and ii.split('\\')[-1] != "IC_combine.dat"])
+#        print(hec,ic)
+        with open (hec_f, 'w') as outfile:
+            for f in hec:
+                with open(self.test_path+f,'r') as infile:
+                    next(infile)
+                    for line in infile:
+                        outfile.write(line)
+                        
+        with open (ic_f, 'w') as outfile1:
+            for f1 in ic:
+                with open(self.test_path+f1,'r') as infile1:
+                    next(infile1)
+                    for line1 in infile1:
+                        outfile1.write(line1)
+        return path_press
+
+#-------------main--------------------------------------------   
+if __name__ == '__main__':       
+    conf_loc='ab_data.db'
+    A=abdata(conf_loc)
+    files=A.find_files()
+    path_p=A.find_hec(files)
+#    print(files)
+#    A.drop_table('my_t')
+#    A.create_table('my_t')
+#    A.import_fun()
+#    data1=A.select_vals('my_t')
+    A.close_f()
