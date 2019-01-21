@@ -11,6 +11,8 @@ import sqlite3 as sql
 import datetime
 import inspect
 import os
+#import matplotlib.pyplot as plt
+#--------------------------------------------------------------------
 def time_this(original_function):  
     '''Measures the processing time. Decorator'''
     @wraps(original_function)                      
@@ -207,14 +209,37 @@ class abdata():
             files=self.find_files()
             path_p=self.find_hec(files)
             self.import_fun(path_p)
-
+#-------------------------------------------------------------   
+    @my_logger
+    @time_this
+    def select_interval(self,tb_name,t1,t2):
+        '''select data between two timestamps t1 and t2 in datetime format'''
+        assert type(t1) is datetime.datetime and type(t2) is datetime.datetime,"t1 and t2 should be datetime"
+        assert t2>t1, "t2 should be > t1"
+        query="SELECT * FROM {} WHERE date >= Datetime('{}') AND date <= Datetime('{}') ORDER BY date ASC".format(tb_name,str(t1),str(t2))
+        self.cursor.execute(query)
+        data=self.cursor.fetchall()
+        res=self._removeNull(data)
+        return res
 #-------------main--------------------------------------------   
-if __name__ == '__main__':       
-    conf_loc='ab_data.db'
+if __name__ == '__main__':    
+    '''28.11 to 11.01'''
+    conf_loc="c:\\dima\\proj\\ab_trans\\ab_data.db"
     data_dir="c:\\dima\\proj\\ab_trans\\data\\"
+    t1=datetime.datetime(2018,11,28,0,0,0,0)
+    t2=datetime.datetime(2018,11,29,0,0,0,0)
     A=abdata(conf_loc,data_dir)
 #    A.drop_table('my_t')
-    A.create_table('my_t')
-    A.dir_scan()
-    data1=A.select_vals('my_t')
+#    A.create_table('my_t')
+#    A.dir_scan()
+#    data1=A.select_vals('my_t')
+    res=A.select_interval('my_t',t1,t2)
+#    fig1 = plt.figure(1, clear = True)
+#    ax1 = fig1.add_subplot(211)
+#    ax1.set_ylabel('Q')
+#    ax1.set_xlabel('time [sec]')
+#    ax1.set_title('Q vs time for both forks')
+#    ax1.scatter(res[0],dataJ[1],color='green', s=0.5)
+#    plt.grid()
+#    plt.show()
     A.close_f()
