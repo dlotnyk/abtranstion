@@ -11,7 +11,8 @@ import sqlite3 as sql
 import datetime
 import inspect
 import os
-#import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
+import scipy.signal as sci
 #--------------------------------------------------------------------
 def time_this(original_function):  
     '''Measures the processing time. Decorator'''
@@ -220,26 +221,98 @@ class abdata():
         self.cursor.execute(query)
         data=self.cursor.fetchall()
         res=self._removeNull(data)
-        return res
+        wind=31
+        poly=1
+        date=[datetime.datetime.strptime(ii[0],'%Y-%m-%d %H:%M:%S') for ii in res]
+        Q1=[ii[2] for ii in res]
+        Q2=[ii[3] for ii in res]
+        temp=[ii[4] for ii in res]
+        pres=[ii[5] for ii in res]
+        time=[ii[1] for ii in res]
+        dQ1=sci.savgol_filter(Q1,wind,poly, deriv=1)
+        dQ2=sci.savgol_filter(Q2,wind,poly, deriv=1)
+        time=time-time[0]
+        return time,Q1,Q2,temp,pres,date,dQ1,dQ2
+#-------------------------------------------------------------   
+    @my_logger
+    @time_this
+    def calc_params(self,dQ1,dQ2,temp,time):
+        '''calculate Tc and Tab Tba based on derivative
+        rate in [mK/hr]'''
+        fit=np.polyfit(time,temp,1)
+        rate=fit[0]*3600
+        ind1Q1=np.argmax(np.abs(dQ1[0:round(0.4*len(dQ1))]))
+        ind2Q1=np.argmax(np.abs(dQ1[round(0.6*len(dQ1)):-1]))
+        ind1Q2=np.argmax(np.abs(dQ2[0:round(0.4*len(dQ2))]))
+        ind2Q2=np.argmax(np.abs(dQ2[round(0.6*len(dQ2)):-1]))
+        return rate,ind1Q1,ind2Q1+round(0.6*len(dQ1)),ind1Q2,ind2Q2+round(0.6*len(dQ2))
+        
 #-------------main--------------------------------------------   
 if __name__ == '__main__':    
     '''28.11 to 11.01'''
     conf_loc="c:\\dima\\proj\\ab_trans\\ab_data.db"
     data_dir="c:\\dima\\proj\\ab_trans\\data\\"
-    t1=datetime.datetime(2018,11,28,0,0,0,0)
-    t2=datetime.datetime(2018,11,29,0,0,0,0)
+    t1=datetime.datetime(2018,12,20,2,0,0,0)
+    t2=datetime.datetime(2018,12,20,6,0,0,0)
     A=abdata(conf_loc,data_dir)
-#    A.drop_table('my_t')
-#    A.create_table('my_t')
 #    A.dir_scan()
 #    data1=A.select_vals('my_t')
-    res=A.select_interval('my_t',t1,t2)
-#    fig1 = plt.figure(1, clear = True)
-#    ax1 = fig1.add_subplot(211)
-#    ax1.set_ylabel('Q')
-#    ax1.set_xlabel('time [sec]')
-#    ax1.set_title('Q vs time for both forks')
-#    ax1.scatter(res[0],dataJ[1],color='green', s=0.5)
-#    plt.grid()
-#    plt.show()
+    time,Q1,Q2,temp,pres,date,dQ1,dQ2=A.select_interval('my_t',t1,t2)
+    p1=np.mean(pres)
+    rate,ind1Q1,ind2Q1,ind1Q2,ind2Q2=A.calc_params(dQ1,dQ2,temp,time)
+#----------Print and plot-------------------------------------    
+    print("Pressure is ",p1)
+    print("The Ramp is {} mK/hr".format(rate))
+    print("First der for HEC ",temp[ind1Q1])
+    print("First der for IC ",temp[ind1Q2])
+    print("Second der for HEC ",temp[ind2Q1])
+    print("Second der for IC ",temp[ind2Q2])
+    print("Start temperature is ",temp[0])
+    print("Ending temperature is ",temp[-1])
+    fig1 = plt.figure(1, clear = True)
+    ax1 = fig1.add_subplot(221)
+    ax1.set_ylabel('Q')
+    ax1.set_xlabel('date')
+    ax1.set_title("Q vs time for "+str(p1)+" bar")
+    ax1.scatter(date,Q1,color='green', s=0.5, label='HEC')
+    ax1.scatter(date,Q2,color='blue', s=0.5, label='IC')
+    ax1.scatter(date[ind1Q1],Q1[ind1Q1],color='red', s=10)
+    ax1.scatter(date[ind2Q1],Q1[ind2Q1],color='red', s=10)
+    ax1.scatter(date[ind1Q2],Q2[ind1Q2],color='red', s=10)
+    ax1.scatter(date[ind2Q2],Q2[ind2Q2],color='red', s=10)
+    ax1.set_xlim(t1,t2)
+    ax1.legend()
+    plt.gcf().autofmt_xdate()
+    plt.grid()
+    ax2 = fig1.add_subplot(222)
+    ax2.set_ylabel(r'$T_{MC}$')
+    ax2.set_xlabel('Date')
+    ax2.set_title(r'$T_{MC}$ vs time for both forks')
+    ax2.scatter(date,temp,color='green', s=0.5)
+    ax2.set_xlim(t1,t2)
+    plt.gcf().autofmt_xdate()
+    plt.grid()
+    ax3 = fig1.add_subplot(223)
+    ax3.set_ylabel('dQ/dt')
+    ax3.set_xlabel('date')
+    ax3.set_title("derivative vs time")
+    ax3.scatter(date,dQ1,color='green', s=0.5)
+    ax3.scatter(date,dQ2,color='blue', s=0.5)
+    ax3.scatter(date[ind1Q1],dQ1[ind1Q1],color='red', s=10)
+    ax3.scatter(date[ind2Q1],dQ1[ind2Q1],color='red', s=10)
+    ax3.scatter(date[ind1Q2],dQ2[ind1Q2],color='red', s=10)
+    ax3.scatter(date[ind2Q2],dQ2[ind2Q2],color='red', s=10)
+    ax3.set_xlim(t1,t2)
+    plt.gcf().autofmt_xdate()
+    plt.grid()
+    ax4 = fig1.add_subplot(224)
+    ax4.set_ylabel('Pressure')
+    ax4.set_xlabel('date')
+    ax4.set_title('Pressure vs time')
+    ax4.scatter(date,pres,color='green', s=0.5)
+    ax4.set_xlim(t1,t2)
+    plt.gcf().autofmt_xdate()
+    plt.grid()
+    plt.show()
+    
     A.close_f()
