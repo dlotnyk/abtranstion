@@ -55,7 +55,7 @@ class abdata():
         self.connect_loc(conf)
 #-------------------------------------------------------------
     def __repr__(self):
-        return "{}, db: {}".format(self.__class__.__name__,self.conf)
+        return "{}".format(self.__class__.__name__)
 #-------------------------------------------------------------    
     @my_logger  
     @time_this 
@@ -95,7 +95,6 @@ class abdata():
                 d1=line1.split()
                 mm,dd,yy,hh,mins,ss=self.__gettime(d[0],d[1])
                 mm1,dd1,yy1,hh1,mins1,ss1=self.__gettime(d2[0],d2[1])
-                a=datetime.datetime(int('20'+yy),int(mm),int(dd),int(hh),int(mins),int(ss),0)
                 a1=datetime.datetime(int('20'+yy1),int(mm1),int(dd1),int(hh1),int(mins1),int(ss1),0)
                 if a1<a:
                     try:
@@ -221,20 +220,21 @@ class abdata():
         self.cursor.execute(query)
         data=self.cursor.fetchall()
         res=self._removeNull(data)
+        print("mark!")
         wind=31
         poly=1
-        date=[datetime.datetime.strptime(ii[0],'%Y-%m-%d %H:%M:%S') for ii in res]
-        Q1=[ii[2] for ii in res]
-        Q2=[ii[3] for ii in res]
-        temp=[ii[4] for ii in res]
-        pres=[ii[5] for ii in res]
-        time=[ii[1] for ii in res]
+        date=tuple([datetime.datetime.strptime(ii[0],'%Y-%m-%d %H:%M:%S') for ii in res])
+        Q1=tuple([ii[2] for ii in res])
+        Q2=tuple([ii[3] for ii in res])
+        temp=tuple([ii[4] for ii in res])
+        pres=tuple([ii[5] for ii in res])
+        time=tuple([ii[1] for ii in res])
         dQ1=sci.savgol_filter(Q1,wind,poly, deriv=1)
         dQ2=sci.savgol_filter(Q2,wind,poly, deriv=1)
         time=time-time[0]
         return time,Q1,Q2,temp,pres,date,dQ1,dQ2
 #-------------------------------------------------------------   
-    @my_logger
+#    @my_logger
     @time_this
     def calc_params(self,dQ1,dQ2,temp,time):
         '''calculate Tc and Tab Tba based on derivative
@@ -246,21 +246,20 @@ class abdata():
         ind1Q2=np.argmax(np.abs(dQ2[0:round(0.4*len(dQ2))]))
         ind2Q2=np.argmax(np.abs(dQ2[round(0.6*len(dQ2)):-1]))
         return rate,ind1Q1,ind2Q1+round(0.6*len(dQ1)),ind1Q2,ind2Q2+round(0.6*len(dQ2))
-        
+
 #-------------main--------------------------------------------   
 if __name__ == '__main__':    
     '''28.11 to 11.01'''
     conf_loc="c:\\dima\\proj\\ab_trans\\ab_data.db"
     data_dir="c:\\dima\\proj\\ab_trans\\data\\"
-    t1=datetime.datetime(2018,12,20,2,0,0,0)
-    t2=datetime.datetime(2018,12,20,6,0,0,0)
+    t1=datetime.datetime(2019,2,12,10,0,0,0)
+    t2=datetime.datetime(2019,2,12,16,40,0,0)
     A=abdata(conf_loc,data_dir)
 #    A.dir_scan()
-#    data1=A.select_vals('my_t')
     time,Q1,Q2,temp,pres,date,dQ1,dQ2=A.select_interval('my_t',t1,t2)
     p1=np.mean(pres)
     rate,ind1Q1,ind2Q1,ind1Q2,ind2Q2=A.calc_params(dQ1,dQ2,temp,time)
-#----------Print and plot-------------------------------------    
+##----------Print and plot-------------------------------------    
     print("Pressure is ",p1)
     print("The Ramp is {} mK/hr".format(rate))
     print("First der for HEC ",temp[ind1Q1])
@@ -316,3 +315,4 @@ if __name__ == '__main__':
     plt.show()
     
     A.close_f()
+    
