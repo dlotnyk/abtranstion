@@ -13,7 +13,7 @@ class mysabdata(abdata):
 #       self.connect_loc(conf)
         abdata.__init__(self,conf, data_dir)
 #--------------------------------------------------
-    @my_logger
+#    @my_logger
     @time_this
     def connect_loc(self,conf):
         '''reconfigure acc to mysql'''

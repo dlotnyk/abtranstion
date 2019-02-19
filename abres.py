@@ -95,6 +95,7 @@ class abdata():
                 d1=line1.split()
                 mm,dd,yy,hh,mins,ss=self.__gettime(d[0],d[1])
                 mm1,dd1,yy1,hh1,mins1,ss1=self.__gettime(d2[0],d2[1])
+                a=datetime.datetime(int('20'+yy),int(mm),int(dd),int(hh),int(mins),int(ss),0)
                 a1=datetime.datetime(int('20'+yy1),int(mm1),int(dd1),int(hh1),int(mins1),int(ss1),0)
                 if a1<a:
                     try:
