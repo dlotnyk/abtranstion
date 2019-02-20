@@ -13,6 +13,7 @@ import inspect
 import os
 import matplotlib.pyplot as plt
 import scipy.signal as sci
+import collections
 #--------------------------------------------------------------------
 def time_this(original_function):  
     '''Measures the processing time. Decorator'''
@@ -44,11 +45,14 @@ def my_logger(orig_func):
 #-------------------------------------------------------------    
 class abdata():
     '''read from fies, create a sql database from date, universal time, Q, Tmc and pressure'''
-    
-#    test_path="c:\\dima\\proj\\ab_trans\\20181201\\"
+    # class attributes
+    table_name='my_t'
     hec_file="HEC_combine.dat"
     ic_file="IC_combine.dat"
     work_dir=""
+    dataset=collections.namedtuple('dataset','q1 q2 temp pressure time')
+    qttime=dataset(q1=2,q2=3,temp=4,pressure=5,time=1)
+    # class methods
     def __init__(self,conf,data_dir):
         self.conf=conf
         self.data_dir=data_dir
@@ -93,18 +97,18 @@ class abdata():
             for line, line1 in zip(f,f1):
                 d=line.split()
                 d1=line1.split()
-                mm,dd,yy,hh,mins,ss=self.__gettime(d[0],d[1])
-                mm1,dd1,yy1,hh1,mins1,ss1=self.__gettime(d2[0],d2[1])
+                mm,dd,yy,hh,mins,ss=self._gettime(d[0],d[1])
+                mm1,dd1,yy1,hh1,mins1,ss1=self._gettime(d2[0],d2[1])
                 a=datetime.datetime(int('20'+yy),int(mm),int(dd),int(hh),int(mins),int(ss),0)
                 a1=datetime.datetime(int('20'+yy1),int(mm1),int(dd1),int(hh1),int(mins1),int(ss1),0)
                 if a1<a:
                     try:
                         d2=next(f2).split()
-                        mm1,dd1,yy1,hh1,mins1,ss1=self.__gettime(d2[0],d2[1])
+                        mm1,dd1,yy1,hh1,mins1,ss1=self._gettime(d2[0],d2[1])
                         press=float(d2[3])
                     except StopIteration:
                         press=press
-                self.__update_table('my_t',(a,int(d[2]),float(d[6]),float(d1[6]),float(d[13]),press))
+                self.__update_table(self.table_name,(a,int(d[2]),float(d[6]),float(d1[6]),float(d[13]),press))
             self.cnx.commit()
 #-------------------------------------------------------------    
     @my_logger
@@ -115,7 +119,7 @@ class abdata():
             ll={os.path.join(root,file) for file in files if file.endswith(".dat")}
         return ll
 #-------------------------------------------------------------    
-    def __gettime(self,date,time):
+    def _gettime(self,date,time):
         '''get time in datetime from strings date and time'''
         mm,dd,yy=date.split('/')
         hh,mins,ss=time.split(':')
@@ -213,23 +217,31 @@ class abdata():
 #-------------------------------------------------------------   
     @my_logger
     @time_this
-    def select_interval(self,tb_name,t1,t2):
-        '''select data between two timestamps t1 and t2 in datetime format'''
+    def _forselect(self,tb_name,t1,t2):
         assert type(t1) is datetime.datetime and type(t2) is datetime.datetime,"t1 and t2 should be datetime"
         assert t2>t1, "t2 should be > t1"
         query="SELECT * FROM {} WHERE date >= Datetime('{}') AND date <= Datetime('{}') ORDER BY date ASC".format(tb_name,str(t1),str(t2))
         self.cursor.execute(query)
         data=self.cursor.fetchall()
         res=self._removeNull(data)
+        return res
+#-------------------------------------------------------------   
+    @my_logger
+    @time_this
+    def select_interval(self,tb_name,t1,t2):
+        '''select data between two timestamps t1 and t2 in datetime format'''
+        assert type(t1) is datetime.datetime and type(t2) is datetime.datetime,"t1 and t2 should be datetime"
+        assert t2>t1, "t2 should be > t1"
+        res=self._forselect(tb_name,t1,t2)
         print("mark!")
         wind=31
         poly=1
         date=tuple([datetime.datetime.strptime(ii[0],'%Y-%m-%d %H:%M:%S') for ii in res])
-        Q1=tuple([ii[2] for ii in res])
-        Q2=tuple([ii[3] for ii in res])
-        temp=tuple([ii[4] for ii in res])
-        pres=tuple([ii[5] for ii in res])
-        time=tuple([ii[1] for ii in res])
+        Q1=tuple([ii[self.qttime.q1] for ii in res])
+        Q2=tuple([ii[self.qttime.q2] for ii in res])
+        temp=tuple([ii[self.qttime.temp] for ii in res])
+        pres=tuple([ii[self.qttime.pressure] for ii in res])
+        time=tuple([ii[self.qttime.time] for ii in res])
         dQ1=sci.savgol_filter(Q1,wind,poly, deriv=1)
         dQ2=sci.savgol_filter(Q2,wind,poly, deriv=1)
         time=time-time[0]
@@ -251,13 +263,14 @@ class abdata():
 #-------------main--------------------------------------------   
 if __name__ == '__main__':    
     '''28.11 to 11.01'''
+   
     conf_loc="c:\\dima\\proj\\ab_trans\\ab_data.db"
     data_dir="c:\\dima\\proj\\ab_trans\\data\\"
     t1=datetime.datetime(2019,2,12,10,0,0,0)
     t2=datetime.datetime(2019,2,12,16,40,0,0)
     A=abdata(conf_loc,data_dir)
 #    A.dir_scan()
-    time,Q1,Q2,temp,pres,date,dQ1,dQ2=A.select_interval('my_t',t1,t2)
+    time,Q1,Q2,temp,pres,date,dQ1,dQ2=A.select_interval(A.table_name,t1,t2)
     p1=np.mean(pres)
     rate,ind1Q1,ind2Q1,ind1Q2,ind2Q2=A.calc_params(dQ1,dQ2,temp,time)
 ##----------Print and plot-------------------------------------    

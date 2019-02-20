@@ -1,0 +1,165 @@
+INFO:root: 2019-02-18 21:45:14 Ran with args:    B.close_f(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-19 10:36:18 Ran with args:    B.close_f(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-19 10:41:15 Ran with args:        self.connect_loc(conf), (abdata, 'c:\\dima\\proj\\ab_trans\\ab_data.db'), and kwargs: {}
+INFO:root: 2019-02-19 10:41:15 Ran with args:    time,Q1,Q2,temp,pres,date,dQ1,dQ2=A.select_interval('my_t',t1,t2), (abdata, 'my_t', datetime.datetime(2019, 2, 12, 10, 0), datetime.datetime(2019, 2, 12, 16, 40)), and kwargs: {}
+INFO:root: 2019-02-19 10:41:15 Ran with args:        res=self._forselect(self,tb_name,t1,t2), (abdata, abdata, 'my_t', datetime.datetime(2019, 2, 12, 10, 0), datetime.datetime(2019, 2, 12, 16, 40)), and kwargs: {}
+INFO:root: 2019-02-19 10:41:40 Ran with args:        self.connect_loc(conf), (abdata, 'c:\\dima\\proj\\ab_trans\\ab_data.db'), and kwargs: {}
+INFO:root: 2019-02-19 10:41:40 Ran with args:    time,Q1,Q2,temp,pres,date,dQ1,dQ2=A.select_interval('my_t',t1,t2), (abdata, 'my_t', datetime.datetime(2019, 2, 12, 10, 0), datetime.datetime(2019, 2, 12, 16, 40)), and kwargs: {}
+INFO:root: 2019-02-19 10:41:40 Ran with args:        res=self._forselect(tb_name,t1,t2), (abdata, 'my_t', datetime.datetime(2019, 2, 12, 10, 0), datetime.datetime(2019, 2, 12, 16, 40)), and kwargs: {}
+INFO:root: 2019-02-19 10:41:52 Ran with args:    A.close_f(), (abdata,), and kwargs: {}
+INFO:root: 2019-02-19 10:56:26 Ran with args:        self.connect_loc(conf), (abdata, 'c:\\dima\\proj\\ab_trans\\ab_data.db'), and kwargs: {}
+INFO:root: 2019-02-19 10:56:26 Ran with args:    time,Q1,Q2,temp,pres,date,dQ1,dQ2=A.select_interval('my_t',t1,t2), (abdata, 'my_t', datetime.datetime(2019, 2, 12, 10, 0), datetime.datetime(2019, 2, 12, 16, 40)), and kwargs: {}
+INFO:root: 2019-02-19 10:56:26 Ran with args:        res=self._forselect(tb_name,t1,t2), (abdata, 'my_t', datetime.datetime(2019, 2, 12, 10, 0), datetime.datetime(2019, 2, 12, 16, 40)), and kwargs: {}
+INFO:root: 2019-02-19 10:56:28 Ran with args:    A.close_f(), (abdata,), and kwargs: {}
+INFO:root: 2019-02-19 11:09:57 Ran with args:    B.close_f(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-19 11:11:20 Ran with args:    B.dir_scan(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-19 11:11:20 Ran with args:            files=self.find_files(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-19 11:11:20 Ran with args:            path_p=self.find_hec(files), (mysabdata, {'c:\\dima\\proj\\ab_trans\\data\\20181128\\HEC2p5mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181128\\MCT-Log11282018.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181128\\pressure_log20181128.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181128\\IC2p5mK.dat'}), and kwargs: {}
+INFO:root: 2019-02-19 11:11:20 Ran with args:    B.close_f(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-19 11:14:31 Ran with args:        self.connect_loc(conf), (abdata, 'c:\\dima\\proj\\ab_trans\\ab_data.db'), and kwargs: {}
+INFO:root: 2019-02-19 11:14:31 Ran with args:    time,Q1,Q2,temp,pres,date,dQ1,dQ2=A.select_interval(A.table_name,t1,t2), (abdata, 'my_t', datetime.datetime(2019, 2, 12, 10, 0), datetime.datetime(2019, 2, 12, 16, 40)), and kwargs: {}
+INFO:root: 2019-02-19 11:14:31 Ran with args:        res=self._forselect(tb_name,t1,t2), (abdata, 'my_t', datetime.datetime(2019, 2, 12, 10, 0), datetime.datetime(2019, 2, 12, 16, 40)), and kwargs: {}
+INFO:root: 2019-02-19 11:14:31 Ran with args:    A.close_f(), (abdata,), and kwargs: {}
+INFO:root: 2019-02-19 11:39:01 Ran with args:    B.close_f(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-19 11:41:15 Ran with args:    B.close_f(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-19 11:44:11 Ran with args:    B.close_f(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-19 11:44:33 Ran with args:    B.close_f(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-19 11:45:39 Ran with args:    B.close_f(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-19 12:24:54 Ran with args:    B.close_f(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-19 12:33:29 Ran with args:    B.dir_scan(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-19 12:33:29 Ran with args:            files=self.find_files(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-19 12:33:29 Ran with args:            path_p=self.find_hec(files), (mysabdata, {'c:\\dima\\proj\\ab_trans\\data\\20181128\\IC_combine.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181128\\HEC2p5mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181128\\IC2p5mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181128\\MCT-Log11282018.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181128\\pressure_log20181128.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181128\\HEC_combine.dat'}), and kwargs: {}
+INFO:root: 2019-02-19 12:33:29 Ran with args:            self.import_fun(path_p), (mysabdata, ['pressure_log20181128.dat']), and kwargs: {}
+INFO:root: 2019-02-19 12:48:30 Ran with args:    B.dir_scan(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-19 12:48:30 Ran with args:            files=self.find_files(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-19 12:48:30 Ran with args:            path_p=self.find_hec(files), (mysabdata, {'c:\\dima\\proj\\ab_trans\\data\\20181128\\IC_combine.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181128\\HEC2p5mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181128\\IC2p5mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181128\\MCT-Log11282018.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181128\\pressure_log20181128.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181128\\HEC_combine.dat'}), and kwargs: {}
+INFO:root: 2019-02-19 12:48:30 Ran with args:            self.import_fun(path_p), (mysabdata, ['pressure_log20181128.dat']), and kwargs: {}
+INFO:root: 2019-02-19 12:48:45 Ran with args:    B.dir_scan(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-19 12:48:45 Ran with args:            files=self.find_files(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-19 12:48:45 Ran with args:            path_p=self.find_hec(files), (mysabdata, {'c:\\dima\\proj\\ab_trans\\data\\20181128\\IC_combine.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181128\\HEC2p5mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181128\\IC2p5mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181128\\MCT-Log11282018.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181128\\pressure_log20181128.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181128\\HEC_combine.dat'}), and kwargs: {}
+INFO:root: 2019-02-19 12:48:45 Ran with args:            self.import_fun(path_p), (mysabdata, ['pressure_log20181128.dat']), and kwargs: {}
+INFO:root: 2019-02-19 12:49:16 Ran with args:    B.close_f(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-19 13:26:47 Ran with args:        self.connect_loc(conf), (abdata, 'c:\\dima\\proj\\ab_trans\\ab_data.db'), and kwargs: {}
+INFO:root: 2019-02-19 13:26:47 Ran with args:    time,Q1,Q2,temp,pres,date,dQ1,dQ2=A.select_interval(A.table_name,t1,t2), (abdata, 'my_t', datetime.datetime(2019, 2, 12, 10, 0), datetime.datetime(2019, 2, 12, 16, 40)), and kwargs: {}
+INFO:root: 2019-02-19 13:26:54 Ran with args:        self.connect_loc(conf), (abdata, 'c:\\dima\\proj\\ab_trans\\ab_data.db'), and kwargs: {}
+INFO:root: 2019-02-19 13:26:54 Ran with args:    time,Q1,Q2,temp,pres,date,dQ1,dQ2=A.select_interval(A.table_name,t1,t2), (abdata, 'my_t', datetime.datetime(2019, 2, 12, 10, 0), datetime.datetime(2019, 2, 12, 16, 40)), and kwargs: {}
+INFO:root: 2019-02-19 13:26:54 Ran with args:        res=self._forselect(tb_name,t1,t2), (abdata, 'my_t', datetime.datetime(2019, 2, 12, 10, 0), datetime.datetime(2019, 2, 12, 16, 40)), and kwargs: {}
+INFO:root: 2019-02-19 13:26:55 Ran with args:    A.close_f(), (abdata,), and kwargs: {}
+INFO:root: 2019-02-19 13:32:16 Ran with args:    B.close_f(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-19 13:35:48 Ran with args:    B.dir_scan(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-19 13:35:48 Ran with args:            files=self.find_files(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-19 13:35:48 Ran with args:            path_p=self.find_hec(files), (mysabdata, {'c:\\dima\\proj\\ab_trans\\data\\20181129\\HEC2p8mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181129\\IC2p5mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181129\\HEC2p5mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181129\\IC2p8mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181129\\MCT-Log11292018.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181129\\pressure_log20181129.dat'}), and kwargs: {}
+INFO:root: 2019-02-19 13:35:48 Ran with args:            self.import_fun(path_p), (mysabdata, ['pressure_log20181129.dat']), and kwargs: {}
+INFO:root: 2019-02-19 15:52:45 Ran with args:    B.dir_scan(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-19 15:52:45 Ran with args:            files=self.find_files(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-19 15:52:46 Ran with args:            path_p=self.find_hec(files), (mysabdata, {'c:\\dima\\proj\\ab_trans\\data\\20181129\\HEC2p8mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181129\\IC2p5mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181129\\HEC2p5mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181129\\IC_combine.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181129\\HEC_combine.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181129\\IC2p8mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181129\\MCT-Log11292018.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181129\\pressure_log20181129.dat'}), and kwargs: {}
+INFO:root: 2019-02-19 15:52:46 Ran with args:            self.import_fun(path_p), (mysabdata, ['pressure_log20181129.dat']), and kwargs: {}
+INFO:root: 2019-02-19 15:54:07 Ran with args:    B.dir_scan(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-19 15:54:07 Ran with args:            files=self.find_files(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-19 15:54:07 Ran with args:            path_p=self.find_hec(files), (mysabdata, {'c:\\dima\\proj\\ab_trans\\data\\20181129\\IC_combine.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181129\\HEC2p5mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181129\\HEC_combine.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181129\\IC2p5mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181129\\pressure_log20181129.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181129\\MCT-Log11292018.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181129\\IC2p8mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181129\\HEC2p8mK.dat'}), and kwargs: {}
+INFO:root: 2019-02-19 15:54:07 Ran with args:            self.import_fun(path_p), (mysabdata, ['pressure_log20181129.dat']), and kwargs: {}
+INFO:root: 2019-02-20 10:54:10 Ran with args:    B.close_f(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-20 10:54:39 Ran with args:    B.close_f(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-20 10:55:28 Ran with args:    B.close_f(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-20 11:06:44 Ran with args:    B.close_f(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-20 11:08:34 Ran with args:    B.dir_scan(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-20 11:08:34 Ran with args:            files=self.find_files(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-20 11:08:34 Ran with args:            path_p=self.find_hec(files), (mysabdata, {'c:\\dima\\proj\\ab_trans\\data\\20181129\\HEC2p8mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181129\\IC2p5mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181129\\HEC2p5mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181129\\IC_combine.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181129\\HEC_combine.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181129\\IC2p8mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181129\\MCT-Log11292018.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181129\\pressure_log20181129.dat'}), and kwargs: {}
+INFO:root: 2019-02-20 11:08:35 Ran with args:            self.import_fun(path_p), (mysabdata, ['pressure_log20181129.dat']), and kwargs: {}
+INFO:root: 2019-02-20 11:08:59 Ran with args:            files=self.find_files(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-20 11:08:59 Ran with args:            path_p=self.find_hec(files), (mysabdata, {'c:\\dima\\proj\\ab_trans\\data\\20181130\\HEC2p1mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181130\\MCT-Log11302018.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181130\\IC2p5mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181130\\HEC2p5mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181130\\IC2p1mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181130\\pressure_log20181130.dat'}), and kwargs: {}
+INFO:root: 2019-02-20 11:08:59 Ran with args:            self.import_fun(path_p), (mysabdata, ['pressure_log20181130.dat']), and kwargs: {}
+INFO:root: 2019-02-20 11:09:29 Ran with args:    B.close_f(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-20 11:50:02 Ran with args:    time,Q1,Q2,temp,pres,date,dQ1,dQ2=B.select_interval(B.table_name,t1,t2), (mysabdata, 'dd5', datetime.datetime(2018, 11, 28, 10, 0), datetime.datetime(2018, 11, 29, 10, 0)), and kwargs: {}
+INFO:root: 2019-02-20 11:50:02 Ran with args:        res=self._forselect(tb_name,t1,t2), (mysabdata, 'dd5', datetime.datetime(2018, 11, 28, 10, 0), datetime.datetime(2018, 11, 29, 10, 0)), and kwargs: {}
+INFO:root: 2019-02-20 11:51:47 Ran with args:    time,Q1,Q2,temp,pres,date,dQ1,dQ2=B.select_interval(B.table_name,t1,t2), (mysabdata, 'dd5', datetime.datetime(2018, 11, 28, 10, 0), datetime.datetime(2018, 11, 29, 10, 0)), and kwargs: {}
+INFO:root: 2019-02-20 11:51:47 Ran with args:        res=self._forselect(tb_name,t1,t2), (mysabdata, 'dd5', datetime.datetime(2018, 11, 28, 10, 0), datetime.datetime(2018, 11, 29, 10, 0)), and kwargs: {}
+INFO:root: 2019-02-20 11:57:21 Ran with args:    time,Q1,Q2,temp,pres,date,dQ1,dQ2=B.select_interval(B.table_name,t1,t2), (mysabdata, 'dd5', datetime.datetime(2018, 11, 28, 10, 0), datetime.datetime(2018, 11, 29, 10, 0)), and kwargs: {}
+INFO:root: 2019-02-20 11:57:21 Ran with args:        res=self._forselect(tb_name,t1,t2), (mysabdata, 'dd5', datetime.datetime(2018, 11, 28, 10, 0), datetime.datetime(2018, 11, 29, 10, 0)), and kwargs: {}
+INFO:root: 2019-02-20 11:58:09 Ran with args:    time,Q1,Q2,temp,pres,date,dQ1,dQ2=B.select_interval(B.table_name,t1,t2), (mysabdata, 'dd5', datetime.datetime(2018, 11, 28, 10, 0), datetime.datetime(2018, 11, 29, 10, 0)), and kwargs: {}
+INFO:root: 2019-02-20 11:58:09 Ran with args:        res=self._forselect(tb_name,t1,t2), (mysabdata, 'dd5', datetime.datetime(2018, 11, 28, 10, 0), datetime.datetime(2018, 11, 29, 10, 0)), and kwargs: {}
+INFO:root: 2019-02-20 11:58:10 Ran with args:    B.close_f(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-20 12:00:17 Ran with args:    time,Q1,Q2,temp,pres,date,dQ1,dQ2=B.select_interval(B.table_name,t1,t2), (mysabdata, 'dd5', datetime.datetime(2018, 11, 28, 10, 0), datetime.datetime(2018, 11, 29, 10, 0)), and kwargs: {}
+INFO:root: 2019-02-20 12:00:17 Ran with args:        res=self._forselect(tb_name,t1,t2), (mysabdata, 'dd5', datetime.datetime(2018, 11, 28, 10, 0), datetime.datetime(2018, 11, 29, 10, 0)), and kwargs: {}
+INFO:root: 2019-02-20 12:00:19 Ran with args:    B.close_f(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-20 12:01:40 Ran with args:    time,Q1,Q2,temp,pres,date,dQ1,dQ2=B.select_interval(B.table_name,t1,t2), (mysabdata, 'dd5', datetime.datetime(2018, 11, 28, 10, 0), datetime.datetime(2018, 11, 29, 10, 0)), and kwargs: {}
+INFO:root: 2019-02-20 12:01:40 Ran with args:        res=self._forselect(tb_name,t1,t2), (mysabdata, 'dd5', datetime.datetime(2018, 11, 28, 10, 0), datetime.datetime(2018, 11, 29, 10, 0)), and kwargs: {}
+INFO:root: 2019-02-20 12:01:41 Ran with args:    B.close_f(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-20 12:02:04 Ran with args:    time,Q1,Q2,temp,pres,date,dQ1,dQ2=B.select_interval(B.table_name,t1,t2), (mysabdata, 'dd5', datetime.datetime(2018, 11, 28, 12, 0), datetime.datetime(2018, 11, 28, 19, 0)), and kwargs: {}
+INFO:root: 2019-02-20 12:02:04 Ran with args:        res=self._forselect(tb_name,t1,t2), (mysabdata, 'dd5', datetime.datetime(2018, 11, 28, 12, 0), datetime.datetime(2018, 11, 28, 19, 0)), and kwargs: {}
+INFO:root: 2019-02-20 12:02:04 Ran with args:    B.close_f(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-20 12:03:24 Ran with args:    time,Q1,Q2,temp,pres,date,dQ1,dQ2=B.select_interval(B.table_name,t1,t2), (mysabdata, 'dd5', datetime.datetime(2018, 11, 28, 12, 0), datetime.datetime(2018, 11, 28, 19, 0)), and kwargs: {}
+INFO:root: 2019-02-20 12:03:24 Ran with args:        res=self._forselect(tb_name,t1,t2), (mysabdata, 'dd5', datetime.datetime(2018, 11, 28, 12, 0), datetime.datetime(2018, 11, 28, 19, 0)), and kwargs: {}
+INFO:root: 2019-02-20 12:03:24 Ran with args:    B.close_f(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-20 12:37:18 Ran with args:    time,Q1,Q2,temp,pres,date,dQ1,dQ2=B.select_interval(B.table_name,t1,t2), (mysabdata, 'dd5', datetime.datetime(2018, 11, 28, 12, 0), datetime.datetime(2018, 11, 28, 19, 0)), and kwargs: {}
+INFO:root: 2019-02-20 12:37:18 Ran with args:        res=self._forselect(tb_name,t1,t2), (mysabdata, 'dd5', datetime.datetime(2018, 11, 28, 12, 0), datetime.datetime(2018, 11, 28, 19, 0)), and kwargs: {}
+INFO:root: 2019-02-20 12:37:19 Ran with args:    B.close_f(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-20 12:37:47 Ran with args:    time,Q1,Q2,temp,pres,date,dQ1,dQ2=B.select_interval(B.table_name,t1,t2), (mysabdata, 'dd5', datetime.datetime(2018, 11, 28, 12, 0), datetime.datetime(2018, 11, 28, 19, 0)), and kwargs: {}
+INFO:root: 2019-02-20 12:37:47 Ran with args:        res=self._forselect(tb_name,t1,t2), (mysabdata, 'dd5', datetime.datetime(2018, 11, 28, 12, 0), datetime.datetime(2018, 11, 28, 19, 0)), and kwargs: {}
+INFO:root: 2019-02-20 12:38:48 Ran with args:    B.close_f(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-20 13:40:06 Ran with args:    time,Q1,Q2,temp,pres,date,dQ1,dQ2=B.select_interval(B.table_name,t1,t2), (mysabdata, 'data', datetime.datetime(2019, 2, 19, 12, 0), datetime.datetime(2018, 2, 19, 19, 0)), and kwargs: {}
+INFO:root: 2019-02-20 13:40:06 Ran with args:        res=self._forselect(tb_name,t1,t2), (mysabdata, 'data', datetime.datetime(2019, 2, 19, 12, 0), datetime.datetime(2018, 2, 19, 19, 0)), and kwargs: {}
+INFO:root: 2019-02-20 13:40:22 Ran with args:    time,Q1,Q2,temp,pres,date,dQ1,dQ2=B.select_interval(B.table_name,t1,t2), (mysabdata, 'data', datetime.datetime(2019, 2, 19, 12, 0), datetime.datetime(2019, 2, 19, 19, 0)), and kwargs: {}
+INFO:root: 2019-02-20 13:40:22 Ran with args:        res=self._forselect(tb_name,t1,t2), (mysabdata, 'data', datetime.datetime(2019, 2, 19, 12, 0), datetime.datetime(2019, 2, 19, 19, 0)), and kwargs: {}
+INFO:root: 2019-02-20 13:40:23 Ran with args:    B.close_f(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-20 13:53:57 Ran with args:    time,Q1,Q2,temp,pres,date,dQ1,dQ2=B.select_interval(B.table_name,t1,t2), (mysabdata, 'data', datetime.datetime(2019, 2, 19, 12, 0), datetime.datetime(2019, 2, 19, 19, 0)), and kwargs: {}
+INFO:root: 2019-02-20 13:53:57 Ran with args:        res=self._forselect(tb_name,t1,t2), (mysabdata, 'data', datetime.datetime(2019, 2, 19, 12, 0), datetime.datetime(2019, 2, 19, 19, 0)), and kwargs: {}
+INFO:root: 2019-02-20 13:53:57 Ran with args:    B.close_f(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-20 13:54:04 Ran with args:    B.dir_scan(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-20 13:54:04 Ran with args:            files=self.find_files(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-20 13:54:04 Ran with args:            path_p=self.find_hec(files), (mysabdata, {'c:\\dima\\proj\\ab_trans\\data\\20181128\\HEC2p5mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181128\\MCT-Log11282018.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181128\\pressure_log20181128.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181128\\IC2p5mK.dat'}), and kwargs: {}
+INFO:root: 2019-02-20 13:54:04 Ran with args:            self.import_fun(path_p), (mysabdata, ['pressure_log20181128.dat']), and kwargs: {}
+INFO:root: 2019-02-20 13:56:18 Ran with args:    time,Q1,Q2,temp,pres,date,dQ1,dQ2=B.select_interval(B.table_name,t1,t2), (mysabdata, 'data', datetime.datetime(2019, 2, 19, 12, 0), datetime.datetime(2019, 2, 19, 19, 0)), and kwargs: {}
+INFO:root: 2019-02-20 13:56:18 Ran with args:        res=self._forselect(tb_name,t1,t2), (mysabdata, 'data', datetime.datetime(2019, 2, 19, 12, 0), datetime.datetime(2019, 2, 19, 19, 0)), and kwargs: {}
+INFO:root: 2019-02-20 13:56:19 Ran with args:    B.close_f(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-20 13:57:39 Ran with args:    time,Q1,Q2,temp,pres,date,dQ1,dQ2=B.select_interval(B.table_name,t1,t2), (mysabdata, 'dd5', datetime.datetime(2019, 2, 19, 12, 0), datetime.datetime(2019, 2, 19, 19, 0)), and kwargs: {}
+INFO:root: 2019-02-20 13:57:39 Ran with args:        res=self._forselect(tb_name,t1,t2), (mysabdata, 'dd5', datetime.datetime(2019, 2, 19, 12, 0), datetime.datetime(2019, 2, 19, 19, 0)), and kwargs: {}
+INFO:root: 2019-02-20 13:57:56 Ran with args:    B.dir_scan(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-20 13:57:56 Ran with args:            files=self.find_files(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-20 13:57:56 Ran with args:            path_p=self.find_hec(files), (mysabdata, {'c:\\dima\\proj\\ab_trans\\data\\20181128\\IC_combine.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181128\\HEC2p5mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181128\\IC2p5mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181128\\MCT-Log11282018.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181128\\pressure_log20181128.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181128\\HEC_combine.dat'}), and kwargs: {}
+INFO:root: 2019-02-20 13:57:56 Ran with args:            self.import_fun(path_p), (mysabdata, ['pressure_log20181128.dat']), and kwargs: {}
+INFO:root: 2019-02-20 13:58:29 Ran with args:            files=self.find_files(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-20 13:58:29 Ran with args:            path_p=self.find_hec(files), (mysabdata, {'c:\\dima\\proj\\ab_trans\\data\\20181129\\HEC2p8mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181129\\IC2p5mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181129\\HEC2p5mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181129\\IC_combine.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181129\\HEC_combine.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181129\\IC2p8mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181129\\MCT-Log11292018.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181129\\pressure_log20181129.dat'}), and kwargs: {}
+INFO:root: 2019-02-20 13:58:29 Ran with args:            self.import_fun(path_p), (mysabdata, ['pressure_log20181129.dat']), and kwargs: {}
+INFO:root: 2019-02-20 13:58:52 Ran with args:            files=self.find_files(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-20 13:58:52 Ran with args:            path_p=self.find_hec(files), (mysabdata, {'c:\\dima\\proj\\ab_trans\\data\\20181130\\IC_combine.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181130\\HEC2p1mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181130\\MCT-Log11302018.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181130\\IC2p5mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181130\\HEC_combine.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181130\\HEC2p5mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181130\\IC2p1mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181130\\pressure_log20181130.dat'}), and kwargs: {}
+INFO:root: 2019-02-20 13:58:52 Ran with args:            self.import_fun(path_p), (mysabdata, ['pressure_log20181130.dat']), and kwargs: {}
+INFO:root: 2019-02-20 13:59:22 Ran with args:            files=self.find_files(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-20 13:59:22 Ran with args:            path_p=self.find_hec(files), (mysabdata, {'c:\\dima\\proj\\ab_trans\\data\\20181201\\HEC2p2mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181201\\IC2p2mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181201\\MCT-Log12012018.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181201\\pressure_log20181201.dat'}), and kwargs: {}
+INFO:root: 2019-02-20 13:59:22 Ran with args:            self.import_fun(path_p), (mysabdata, ['pressure_log20181201.dat']), and kwargs: {}
+INFO:root: 2019-02-20 13:59:51 Ran with args:            files=self.find_files(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-20 13:59:51 Ran with args:            path_p=self.find_hec(files), (mysabdata, {'c:\\dima\\proj\\ab_trans\\data\\20181202\\HEC2p2mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181202\\IC2p2mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181202\\pressure_log20181202.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181202\\MCT-Log12022018.dat'}), and kwargs: {}
+INFO:root: 2019-02-20 13:59:51 Ran with args:            self.import_fun(path_p), (mysabdata, ['pressure_log20181202.dat']), and kwargs: {}
+INFO:root: 2019-02-20 14:00:23 Ran with args:            files=self.find_files(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-20 14:00:23 Ran with args:            path_p=self.find_hec(files), (mysabdata, {'c:\\dima\\proj\\ab_trans\\data\\20181203\\IC2p2mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181203\\MCT-Log12032018.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181203\\HEC2p2mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181203\\pressure_log20181203.dat'}), and kwargs: {}
+INFO:root: 2019-02-20 14:00:23 Ran with args:            self.import_fun(path_p), (mysabdata, ['pressure_log20181203.dat']), and kwargs: {}
+INFO:root: 2019-02-20 14:00:56 Ran with args:            files=self.find_files(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-20 14:00:56 Ran with args:            path_p=self.find_hec(files), (mysabdata, {'c:\\dima\\proj\\ab_trans\\data\\20181204\\IC2p3mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181204\\IC2p4mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181204\\pressure_log20181204.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181204\\HEC2p4mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181204\\MCT-Log12042018.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181204\\HEC2p3mK.dat'}), and kwargs: {}
+INFO:root: 2019-02-20 14:00:56 Ran with args:            self.import_fun(path_p), (mysabdata, ['pressure_log20181204.dat']), and kwargs: {}
+INFO:root: 2019-02-20 14:01:26 Ran with args:            files=self.find_files(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-20 14:01:26 Ran with args:            path_p=self.find_hec(files), (mysabdata, {'c:\\dima\\proj\\ab_trans\\data\\20181205\\IC2p5mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181205\\pressure_log20181205.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181205\\HEC2p5mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181205\\MCT-Log12052018.dat'}), and kwargs: {}
+INFO:root: 2019-02-20 14:01:26 Ran with args:            self.import_fun(path_p), (mysabdata, ['pressure_log20181205.dat']), and kwargs: {}
+INFO:root: 2019-02-20 14:01:59 Ran with args:            files=self.find_files(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-20 14:01:59 Ran with args:            path_p=self.find_hec(files), (mysabdata, {'c:\\dima\\proj\\ab_trans\\data\\20181206\\HEC19p0mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181206\\IC19p0mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181206\\pressure_log20181206.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181206\\MCT-Log12062018.dat'}), and kwargs: {}
+INFO:root: 2019-02-20 14:01:59 Ran with args:            self.import_fun(path_p), (mysabdata, ['pressure_log20181206.dat']), and kwargs: {}
+INFO:root: 2019-02-20 14:02:32 Ran with args:            files=self.find_files(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-20 14:02:32 Ran with args:            path_p=self.find_hec(files), (mysabdata, {'c:\\dima\\proj\\ab_trans\\data\\20181207\\pressure_log20181207.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181207\\MCT-Log12072018.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181207\\IC9p3mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181207\\HEC9p3mK.dat'}), and kwargs: {}
+INFO:root: 2019-02-20 14:02:33 Ran with args:            self.import_fun(path_p), (mysabdata, ['pressure_log20181207.dat']), and kwargs: {}
+INFO:root: 2019-02-20 14:03:06 Ran with args:            files=self.find_files(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-20 14:03:06 Ran with args:            path_p=self.find_hec(files), (mysabdata, {'c:\\dima\\proj\\ab_trans\\data\\20181208\\HEC8p0mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181208\\IC8p0mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181208\\pressure_log20181208.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181208\\MCT-Log12082018.dat'}), and kwargs: {}
+INFO:root: 2019-02-20 14:03:06 Ran with args:            self.import_fun(path_p), (mysabdata, ['pressure_log20181208.dat']), and kwargs: {}
+INFO:root: 2019-02-20 14:03:38 Ran with args:            files=self.find_files(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-20 14:03:38 Ran with args:            path_p=self.find_hec(files), (mysabdata, {'c:\\dima\\proj\\ab_trans\\data\\20181209\\IC7p6mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181209\\HEC7p6mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181209\\MCT-Log12092018.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181209\\pressure_log20181209.dat'}), and kwargs: {}
+INFO:root: 2019-02-20 14:03:39 Ran with args:            self.import_fun(path_p), (mysabdata, ['pressure_log20181209.dat']), and kwargs: {}
+INFO:root: 2019-02-20 14:04:11 Ran with args:            files=self.find_files(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-20 14:04:11 Ran with args:            path_p=self.find_hec(files), (mysabdata, {'c:\\dima\\proj\\ab_trans\\data\\20181210\\pressure_log20181210.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181210\\IC7p3mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181210\\MCT-Log12102018.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181210\\HEC7p3mK.dat'}), and kwargs: {}
+INFO:root: 2019-02-20 14:04:11 Ran with args:            self.import_fun(path_p), (mysabdata, ['pressure_log20181210.dat']), and kwargs: {}
+INFO:root: 2019-02-20 14:04:41 Ran with args:            files=self.find_files(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-20 14:04:41 Ran with args:            path_p=self.find_hec(files), (mysabdata, {'c:\\dima\\proj\\ab_trans\\data\\20181211\\pressure_log20181211.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181211\\IC2p2mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181211\\MCT-Log12112018.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181211\\HEC2p2mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181211\\HEC2p3mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181211\\IC2p3mK.dat'}), and kwargs: {}
+INFO:root: 2019-02-20 14:04:41 Ran with args:            self.import_fun(path_p), (mysabdata, ['pressure_log20181211.dat']), and kwargs: {}
+INFO:root: 2019-02-20 14:05:02 Ran with args:            files=self.find_files(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-20 14:05:02 Ran with args:            path_p=self.find_hec(files), (mysabdata, {'c:\\dima\\proj\\ab_trans\\data\\20181212\\HEC2p2mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181212\\IC2p2mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181212\\pressure_log20181212.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181212\\MCT-Log12122018.dat'}), and kwargs: {}
+INFO:root: 2019-02-20 14:05:02 Ran with args:            self.import_fun(path_p), (mysabdata, ['pressure_log20181212.dat']), and kwargs: {}
+INFO:root: 2019-02-20 14:05:27 Ran with args:            files=self.find_files(), (mysabdata,), and kwargs: {}
+INFO:root: 2019-02-20 14:05:27 Ran with args:            path_p=self.find_hec(files), (mysabdata, {'c:\\dima\\proj\\ab_trans\\data\\20181213\\HEC_shortsweep22.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181213\\pressure_log20181213.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181213\\IC2p2mK.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181213\\MCT-Log12132018.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181213\\IC_shortsweep21.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181213\\IC_longsweep11.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181213\\HEC_longsweep12.dat', 'c:\\dima\\proj\\ab_trans\\data\\20181213\\HEC2p2mK.dat'}), and kwargs: {}
+INFO:root: 2019-02-20 14:05:28 Ran with args:            self.import_fun(path_p), (mysabdata, ['pressure_log20181213.dat']), and kwargs: {}
