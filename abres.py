@@ -249,10 +249,13 @@ class abdata():
 #-------------------------------------------------------------   
 #    @my_logger
     @time_this
-    def calc_params(self,dQ1,dQ2,temp,time):
+    def calc_params(self,dQ1,dQ2,temp1,time1):
         '''calculate Tc and Tab Tba based on derivative
         rate in [mK/hr]'''
-        fit=np.polyfit(time,temp,1)
+        temp=np.array(temp1)
+        time=np.array(time1)
+        idx = np.isfinite(temp) & np.isfinite(time)
+        fit=np.polyfit(time[idx],temp[idx],1)
         rate=fit[0]*3600
         ind1Q1=np.argmax(np.abs(dQ1[0:round(0.4*len(dQ1))]))
         ind2Q1=np.argmax(np.abs(dQ1[round(0.6*len(dQ1)):-1]))
@@ -264,8 +267,8 @@ class abdata():
 if __name__ == '__main__':    
     '''28.11 to 11.01'''
    
-    conf_loc="c:\\dima\\proj\\ab_trans\\ab_data.db"
-    data_dir="c:\\dima\\proj\\ab_trans\\data\\"
+    conf_loc="d:\\dima\\proj\\ab_trans\\ab_data.db"
+    data_dir="d:\\dima\\proj\\ab_trans\\data\\"
     t1=datetime.datetime(2019,2,12,10,0,0,0)
     t2=datetime.datetime(2019,2,12,16,40,0,0)
     A=abdata(conf_loc,data_dir)

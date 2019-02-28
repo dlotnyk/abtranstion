@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
  
 path = "c:\\dima\\proj\\test.dat" # notice that \\ is used
 data = np.genfromtxt(path, unpack=True, skip_header=1) # skip head import all columns
-data1 = np.genfromtxt(path, unpack=True, skip_header=1, usecols = (0, 2)) 
+data1 = np.genfromtxt(path, unpack=True, skip_header=1, usecols = (2, 0)) 
 # plot using matplotlib
 # plot on the separate figures
 fig1 = plt.figure(1, clear = True)
@@ -28,7 +28,7 @@ ax2 = fig2.add_subplot(111)
 ax2.set_ylabel(r'$\sqrt{time}$')
 ax2.set_xlabel('time')
 ax2.set_title('square roots')
-ax2.scatter(data[0], data[1], color='green',s=5) # plot with points
+ax2.scatter(data1[0], data1[1], color='green',s=5) # plot with points
 plt.grid()
 
 # plot at 1 figure
