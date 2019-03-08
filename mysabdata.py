@@ -17,7 +17,7 @@ class mysabdata(abdata):
         #       self.conf=conf
         #       self.connect_loc(conf)
         abdata.__init__(self, conf, data_dir)
-# --------------------------------------------------
+
 #    @my_logger
     @time_this
     def connect_loc(self, conf):
@@ -39,7 +39,7 @@ class mysabdata(abdata):
                 print(err)
             if self.cnx:
                 self.cnx.close()
-    # -------------------------------------------------------------
+
     @my_logger
     @time_this
     def import_fun(self, path_press):
@@ -66,7 +66,7 @@ class mysabdata(abdata):
                     int('20'+yy1), int(mm1), int(dd1), int(hh1), int(mins1), int(ss1), 0)
                 arr = np.array((d[2], d[13], d[6], d1[6], d[7], d1[7], press,
                                 0, d[10], d[15], d[16], d[17], d[18]), dtype=float)
-                if a1 < a:
+                if a1 < a:  # synchronize pressure and Q data in time
                     try:
                         d2 = next(f2).split()
                         mm1, dd1, yy1, hh1, mins1, ss1 = self._gettime(
@@ -76,7 +76,6 @@ class mysabdata(abdata):
                         press = press
                 self.__update_table(self.table_name, a, arr)
             self.cnx.commit()
-# --------------------------------------------------
 
     def __update_table(self, tb_name, date, arr1):
         '''set a new values to the table'''
@@ -86,7 +85,7 @@ class mysabdata(abdata):
                  "(`date`, `utime`, `Tmc`, `Q1`, `Q2`, `F1`, `F2`, `Pressure`, `Cmc`, `DriveV`, `PulseA`, `SmallP`, `BigP`, `WaitT`) "
                  "VALUES ('{1}', {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {11}, {12}, {13}, {14}) ".format(tb_name, date, arr[0], arr[1], arr[2], arr[3], arr[4], arr[5], arr[6], arr[7], arr[8], arr[9], arr[10], arr[11], arr[12]))
         self.cursor.execute(query)
-# -------------------------------------------------------------
+
     @my_logger
     @time_this
     def _forselect(self, tb_name, t1, t2):
@@ -100,11 +99,13 @@ class mysabdata(abdata):
         res = self._removeNull(data)
         return res
 
-# -------------------------------------------------------------
     def _removeNull(self, res):
         '''remove nulls and convert it to pyhonic nan's'''
-        kerneldt = np.dtype({'names': ['date', 'utime', 'Tmc', 'Q1', 'Q2', 'F1', 'F2', 'Pressure', 'Cmc', 'DriveV', 'PulseA', 'SmallP', 'BigP', 'WaitT'],
-                             'formats': ['U20', np.float32, np.float32, np.float32, np.float32, np.float32, np.float32, np.float32, np.float32, np.float32, np.float32, np.float32, np.float32, np.float32, np.float32]})
+        kerneldt = np.dtype({'names': ['date', 'utime', 'Tmc', 'Q1', 'Q2', 'F1', 'F2', 'Pressure',
+                                       'Cmc', 'DriveV', 'PulseA', 'SmallP', 'BigP', 'WaitT'],
+                             'formats': ['U20', np.float32, np.float32, np.float32, np.float32,
+                                         np.float32, np.float32, np.float32, np.float32, np.float32, np.float32,
+                                         np.float32, np.float32, np.float32, np.float32]})
         dat = np.zeros(np.shape(res)[0], dtype=kerneldt)
         assert len(dat) > 0, "no data were taken from SELECT"
         for ind, x in enumerate(res):
@@ -114,30 +115,41 @@ class mysabdata(abdata):
             dat[ind] = x
         return dat
 
+    @time_this
+    def calc_pressure(self, dQ1, dQ2, temp, pres):
+        '''calculate Pab and Tab based on derivative
+        rate in [mK/hr]'''
+        ind1Q1 = np.argmax(np.abs(dQ1))
+        ind1Q2 = np.argmax(np.abs(dQ2))
+        p1 = pres[ind1Q1]
+        t1 = temp[ind1Q1]
+        p2 = pres[ind1Q2]
+        t2 = temp[ind1Q2]
+        print("AB Pressure in HEC is ", p1)
+        print("AB Pressure in IC is ", p2)
+        print("Tab in HEC ", t1)
+        print("Tab in IC ", t2)
+        return 0, ind1Q1, ind2Q1, ind1Q1, ind1Q2
+
 
 # -------------------main----------------
 if __name__ == '__main__':
     data_dir = "d:\\dima\\proj\\ab_trans\\data\\"
-    t1 = datetime.datetime(2019, 2, 26, 18, 30, 0, 0)
-    t2 = datetime.datetime(2019, 2, 28, 10, 0, 0, 0)
+    t1 = datetime.datetime(2019, 2, 28, 15, 0, 0, 0)
+    t2 = datetime.datetime(2019, 3, 2, 6, 0, 0, 0)
     B = mysabdata(config, data_dir)
     B.table_name = 'data'
     B.qttime = B.dataset(q1=3, q2=4, temp=2, pressure=7, time=1)
 #    B.dir_scan()
-    time, Q1, Q2, temp, pres, date, dQ1, dQ2 = B.select_interval(
+    time, Q2, Q1, temp, pres, date, dQ2, dQ1 = B.select_interval(
         B.table_name, t1, t2)
     p1 = np.nanmean(pres)
-    rate, ind1Q1, ind2Q1, ind1Q2, ind2Q2 = B.calc_params(dQ1, dQ2, temp, time)
+    rate, ind1Q1, ind2Q1, ind1Q2, ind2Q2 = B.calc_params(dQ1, dQ2, temp,
+                                                         time, pres)
 
+    rate, ind1Q1, ind2Q1, ind1Q2, ind2Q2 = B.calc_pressure(dQ1, dQ2, temp,
+                                                           pres)
 # --------------------------------------------------------------------s
-    print("Pressure is ", p1)
-    print("The Ramp is {} mK/hr".format(rate))
-    print("First der for HEC ", temp[ind1Q1])
-    print("First der for IC ", temp[ind1Q2])
-    print("Second der for HEC ", temp[ind2Q1])
-    print("Second der for IC ", temp[ind2Q2])
-    print("Start temperature is ", temp[0])
-    print("Ending temperature is ", temp[-1])
 
     # plotting
     fig1 = plt.figure(1, clear=True)
@@ -145,8 +157,8 @@ if __name__ == '__main__':
     ax1.set_ylabel('Q')
     ax1.set_xlabel('date')
     ax1.set_title("Q vs time for "+str(p1)+" bar")
-    ax1.scatter(date, Q1, color='green', s=0.5, label='HEC')
-    ax1.scatter(date, Q2, color='blue', s=0.5, label='IC')
+    ax1.scatter(date, Q1, color='green', s=1, label='HEC')
+    ax1.scatter(date, Q2, color='blue', s=1, label='IC')
     ax1.scatter(date[ind1Q1], Q1[ind1Q1], color='red', s=10)
     ax1.scatter(date[ind2Q1], Q1[ind2Q1], color='red', s=10)
     ax1.scatter(date[ind1Q2], Q2[ind1Q2], color='red', s=10)
