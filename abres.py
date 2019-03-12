@@ -45,15 +45,17 @@ def my_logger(orig_func):
         dt_str = str(dt)
         vrema = dt_str.split('.')[0]
         logging.info(
-            ' {} Ran with args:{}, {}, and kwargs: {}'.format(vrema, frm[0:-1], args, kwargs))
+            ' {} Ran with args:{}, {}, and kwargs: {}'.format(vrema, 
+                frm[0:-1], args, kwargs))
         return orig_func(*args, **kwargs)
     return wrapper
 # -------------------------------------------------------------
 # -------------------------------------------------------------
 
 
-class abdata():
-    '''read from fies, create a sql database from date, universal time, Q, Tmc and pressure'''
+class ABData():
+    '''read from fies, create a sqlite database from date, universal time, Q, 
+    Tmc and pressure'''
     # class attributes
     table_name = 'my_t'
     hec_file = "HEC_combine.dat"
@@ -64,6 +66,8 @@ class abdata():
     # class methods
 
     def __init__(self, conf, data_dir):
+        assert type(conf) is str or type(data_dir) is str, \
+                "both input are strings"
         self.conf = conf
         self.data_dir = data_dir
         self.connect_loc(conf)
@@ -96,10 +100,12 @@ class abdata():
         '''import needed data from dat files
         time/date [0] [1]; unitime [2]; Q [6]; Tmc [13]
         update an sql table'''
+        assert type(path_press) is list, "must be a list"
         path = self.work_dir+self.hec_file
         path1 = self.work_dir+self.ic_file
         path2 = self.work_dir+path_press[0]
-        with open(path, 'r') as f, open(path1, 'r') as f1, open(path2, 'r') as f2:
+        with open(path, 'r') as f, open(path1, 'r') as f1, \
+                open(path2, 'r') as f2:
             next(f)  # skip first
             next(f1)
             next(f2)
@@ -110,20 +116,22 @@ class abdata():
                 d1 = line1.split()
                 mm, dd, yy, hh, mins, ss = self._gettime(d[0], d[1])
                 mm1, dd1, yy1, hh1, mins1, ss1 = self._gettime(d2[0], d2[1])
-                a = datetime.datetime(
-                    int('20'+yy), int(mm), int(dd), int(hh), int(mins), int(ss), 0)
-                a1 = datetime.datetime(
-                    int('20'+yy1), int(mm1), int(dd1), int(hh1), int(mins1), int(ss1), 0)
+                a = datetime.datetime(\
+                    int('20'+yy), int(mm), int(dd), int(hh), int(mins), \
+                    int(ss), 0)
+                a1 = datetime.datetime(\
+                    int('20'+yy1), int(mm1), int(dd1), int(hh1), int(mins1),  
+                    int(ss1), 0)
                 if a1 < a:
                     try:
                         d2 = next(f2).split()
-                        mm1, dd1, yy1, hh1, mins1, ss1 = self._gettime(
+                        mm1, dd1, yy1, hh1, mins1, ss1 = self._gettime(\
                             d2[0], d2[1])
                         press = float(d2[3])
                     except StopIteration:
                         press = press
-                self.__update_table(self.table_name, (a, int(d[2]), float(
-                    d[6]), float(d1[6]), float(d[13]), press))
+                self.__update_table(self.table_name, (a, int(d[2]), \
+                        float(d[6]), float(d1[6]), float(d[13]), press))
             self.cnx.commit()
 # -------------------------------------------------------------
     @my_logger
@@ -133,6 +141,7 @@ class abdata():
         for root, dirs, files in os.walk(self.work_dir):
             ll = {os.path.join(root, file)
                   for file in files if file.endswith(".dat")}
+        assert len(ll) > 0, "no files in the directory"
         return ll
 # -------------------------------------------------------------
 
@@ -166,7 +175,8 @@ class abdata():
 
     def __update_table(self, tb_name, values):
         '''set a new values to the table'''
-        query = "INSERT INTO %s (date, uni_time, Q1, Q2, Tmc, pressure) VALUES (?, ?, ?, ?, ?, ?) " % tb_name
+        query = "INSERT INTO %s (date, uni_time, Q1, Q2, Tmc, pressure) \
+        VALUES (?, ?, ?, ?, ?, ?) " % tb_name
         self.cursor.execute(query, values)
 # -------------------------------------------------------------
     @my_logger
@@ -183,9 +193,12 @@ class abdata():
 
     def _removeNull(self, res):
         '''remove nulls and convert it to pyhonic nan's'''
-#        res1=np.transpose(res)
-        kerneldt = np.dtype({'names': ['time', 'uni_t', 'Q1', 'Q2', 'Tmc', 'pressure'], 'formats': [
-                            'U20', np.float32, np.float32, np.float32, np.float32, np.float32]})
+        assert type(res) is list, "must be a list"
+        assert np.shape(res)[0] > 0, "no data provided"
+        kerneldt = np.dtype({'names': ['time', 'uni_t', 'Q1', 'Q2', 'Tmc', \
+            'pressure'], 'formats': [
+                            'U20', np.float32, np.float32, np.float32, 
+                            np.float32, np.float32]})
         dat = np.zeros(np.shape(res)[0], dtype=kerneldt)
         assert len(dat) > 0, "no data were taken from SELECT"
         for ind, x in enumerate(res):
@@ -193,19 +206,24 @@ class abdata():
                 if y is None:
                     y = np.nan
             dat[ind] = x
+        assert type(dat) is np.ndarray, "wrong output"    
         return dat
     # -------------------------------------------------------------
     @my_logger
     @time_this
     def find_hec(self, files):
-        '''find all HEC and IC files. combine them into single HEC and IC. find a path with pressure'''
+        '''find all HEC and IC files. combine them into single HEC and IC. 
+        find a path with pressure'''
         hec_f = self.work_dir+self.hec_file
         ic_f = self.work_dir+self.ic_file
         path_press = sorted([k.split('\\')[-1]
-                             for k in files if k.split('\\')[-1][0:3] == 'pre'])
-        hec = sorted([jj.split('\\')[-1] for jj in files if jj.split('\\')[-1][0:3] == 'HEC'
+                             for k in files if k.split('\\')[-1][0:3] == 
+                                     'pre'])
+        hec = sorted([jj.split('\\')[-1] for jj in files 
+                if jj.split('\\')[-1][0:3] == 'HEC'
                       and jj.split('\\')[-1] != self.hec_file])
-        ic = sorted([ii.split('\\')[-1] for ii in files if ii.split('\\')[-1][0:2] == 'IC'
+        ic = sorted([ii.split('\\')[-1] for ii in files 
+                if ii.split('\\')[-1][0:2] == 'IC'
                      and ii.split('\\')[-1] != self.ic_file])
         with open(hec_f, 'w') as outfile:
             for f in hec:
@@ -242,7 +260,8 @@ class abdata():
         assert type(t1) is datetime.datetime and type(
             t2) is datetime.datetime, "t1 and t2 should be datetime"
         assert t2 > t1, "t2 should be > t1"
-        query = "SELECT * FROM {} WHERE date >= Datetime('{}') AND date <= Datetime('{}') ORDER BY date ASC".format(
+        query = "SELECT * FROM {} WHERE date >= Datetime('{}') AND date \
+                <= Datetime('{}') ORDER BY date ASC".format(
             tb_name, str(t1), str(t2))
         self.cursor.execute(query)
         data = self.cursor.fetchall()
@@ -274,7 +293,7 @@ class abdata():
 # -------------------------------------------------------------
 #    @my_logger
     @time_this
-    def calc_params(self, dQ1, dQ2, temp1, time1,pres):
+    def calc_params(self, dQ1, dQ2, temp1, time1, pres):
         '''calculate Tc and Tab Tba based on derivative
         rate in [mK/hr]'''
         temp = np.array(temp1)
@@ -309,7 +328,7 @@ if __name__ == '__main__':
     data_dir = "d:\\dima\\proj\\ab_trans\\data\\"
     t1 = datetime.datetime(2019, 2, 12, 10, 0, 0, 0)
     t2 = datetime.datetime(2019, 2, 12, 16, 40, 0, 0)
-    A = abdata(conf_loc, data_dir)
+    A = ABData(conf_loc, data_dir)
 #    A.dir_scan()
     time, Q1, Q2, temp, pres, date, dQ1, dQ2 = A.select_interval(
         A.table_name, t1, t2)

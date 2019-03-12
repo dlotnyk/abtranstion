@@ -1,6 +1,6 @@
 import mysql.connector as msql
 import matplotlib.pyplot as plt
-from abres import abdata
+from abres import ABData
 from abres import time_this
 from abres import my_logger
 from mysql.connector import errorcode
@@ -12,11 +12,11 @@ from configa import config
 # another class for mysql connection
 
 
-class mysabdata(abdata):
+class MysABdata(ABData):
     def __init__(self, conf, data_dir):
         #       self.conf=conf
         #       self.connect_loc(conf)
-        abdata.__init__(self, conf, data_dir)
+        ABData.__init__(self, conf, data_dir)
 
 #    @my_logger
     @time_this
@@ -49,7 +49,8 @@ class mysabdata(abdata):
         path = self.work_dir+self.hec_file
         path1 = self.work_dir+self.ic_file
         path2 = self.work_dir+path_press[0]
-        with open(path, 'r') as f, open(path1, 'r') as f1, open(path2, 'r') as f2:
+        with open(path, 'r') as f, open(path1, 'r') as f1, \
+                open(path2, 'r') as f2:
             next(f)  # skip first
             next(f1)
             next(f2)
@@ -61,11 +62,14 @@ class mysabdata(abdata):
                 mm, dd, yy, hh, mins, ss = self._gettime(d[0], d[1])
                 mm1, dd1, yy1, hh1, mins1, ss1 = self._gettime(d2[0], d2[1])
                 a = datetime.datetime(
-                    int('20'+yy), int(mm), int(dd), int(hh), int(mins), int(ss), 0)
+                    int('20'+yy), int(mm), int(dd), int(hh), int(mins),
+                    int(ss), 0)
                 a1 = datetime.datetime(
-                    int('20'+yy1), int(mm1), int(dd1), int(hh1), int(mins1), int(ss1), 0)
+                    int('20'+yy1), int(mm1), int(dd1), int(hh1), int(mins1),
+                    int(ss1), 0)
                 arr = np.array((d[2], d[13], d[6], d1[6], d[7], d1[7], press,
-                                0, d[10], d[15], d[16], d[17], d[18]), dtype=float)
+                                0, d[10], d[15], d[16], d[17], d[18]),
+                                dtype=float)
                 if a1 < a:  # synchronize pressure and Q data in time
                     try:
                         d2 = next(f2).split()
@@ -79,11 +83,17 @@ class mysabdata(abdata):
 
     def __update_table(self, tb_name, date, arr1):
         '''set a new values to the table'''
-#        assert type(date) is str and type(arr1) is np.ndarray, "wrong types in update table"
+#        assert type(date) is str and type(arr1) is np.ndarray, 
+# "wrong types in update table"
         arr = ['NULL' if np.isnan(jj) else str(jj) for jj in arr1]
         query = ("INSERT INTO {0} "
-                 "(`date`, `utime`, `Tmc`, `Q1`, `Q2`, `F1`, `F2`, `Pressure`, `Cmc`, `DriveV`, `PulseA`, `SmallP`, `BigP`, `WaitT`) "
-                 "VALUES ('{1}', {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {11}, {12}, {13}, {14}) ".format(tb_name, date, arr[0], arr[1], arr[2], arr[3], arr[4], arr[5], arr[6], arr[7], arr[8], arr[9], arr[10], arr[11], arr[12]))
+                 "(`date`, `utime`, `Tmc`, `Q1`, `Q2`, `F1`, `F2`, "
+                 "`Pressure`, `Cmc`, `DriveV`, `PulseA`, `SmallP`, `BigP`, "
+                 "`WaitT`) "
+                 "VALUES ('{1}', {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, "
+                 "{10}, {11}, {12}, {13}, {14}) ".format(tb_name, date, 
+                     arr[0], arr[1], arr[2], arr[3], arr[4], arr[5], arr[6], 
+                     arr[7], arr[8], arr[9], arr[10], arr[11], arr[12]))
         self.cursor.execute(query)
 
     @my_logger
@@ -92,8 +102,8 @@ class mysabdata(abdata):
         assert type(t1) is datetime.datetime and type(
             t2) is datetime.datetime, "t1 and t2 should be datetime"
         assert t2 > t1, "t2 should be > t1"
-        query = "SELECT * FROM {} WHERE `date` >= '{}' AND `date` <= '{}' ORDER BY `date` ASC".format(
-            tb_name, str(t1), str(t2))
+        query = ("SELECT * FROM {} WHERE `date` >= '{}' AND `date` <= '{}' "
+        "ORDER BY `date` ASC".format(tb_name, str(t1), str(t2)))
         self.cursor.execute(query)
         data = self.cursor.fetchall()
         res = self._removeNull(data)
@@ -101,11 +111,12 @@ class mysabdata(abdata):
 
     def _removeNull(self, res):
         '''remove nulls and convert it to pyhonic nan's'''
-        kerneldt = np.dtype({'names': ['date', 'utime', 'Tmc', 'Q1', 'Q2', 'F1', 'F2', 'Pressure',
-                                       'Cmc', 'DriveV', 'PulseA', 'SmallP', 'BigP', 'WaitT'],
-                             'formats': ['U20', np.float32, np.float32, np.float32, np.float32,
-                                         np.float32, np.float32, np.float32, np.float32, np.float32, np.float32,
-                                         np.float32, np.float32, np.float32, np.float32]})
+        kerneldt = np.dtype({'names': ['date', 'utime', 'Tmc', 'Q1', 'Q2', 
+            'F1', 'F2', 'Pressure','Cmc', 'DriveV', 'PulseA', 'SmallP', 
+            'BigP', 'WaitT'],'formats': ['U20', np.float32, np.float32,
+                np.float32, np.float32,np.float32, np.float32, np.float32,
+                np.float32, np.float32, np.float32,np.float32, np.float32, 
+                np.float32, np.float32]})
         dat = np.zeros(np.shape(res)[0], dtype=kerneldt)
         assert len(dat) > 0, "no data were taken from SELECT"
         for ind, x in enumerate(res):
@@ -135,9 +146,9 @@ class mysabdata(abdata):
 # -------------------main----------------
 if __name__ == '__main__':
     data_dir = "d:\\dima\\proj\\ab_trans\\data\\"
-    t1 = datetime.datetime(2019, 2, 28, 15, 0, 0, 0)
-    t2 = datetime.datetime(2019, 3, 2, 6, 0, 0, 0)
-    B = mysabdata(config, data_dir)
+    t1 = datetime.datetime(2019, 3, 5, 15, 0, 0, 0)
+    t2 = datetime.datetime(2019, 3, 10, 18, 0, 0, 0)
+    B = MysABdata(config, data_dir)
     B.table_name = 'data'
     B.qttime = B.dataset(q1=3, q2=4, temp=2, pressure=7, time=1)
 #    B.dir_scan()
@@ -147,8 +158,8 @@ if __name__ == '__main__':
     rate, ind1Q1, ind2Q1, ind1Q2, ind2Q2 = B.calc_params(dQ1, dQ2, temp,
                                                          time, pres)
 
-    rate, ind1Q1, ind2Q1, ind1Q2, ind2Q2 = B.calc_pressure(dQ1, dQ2, temp,
-                                                           pres)
+#    rate, ind1Q1, ind2Q1, ind1Q2, ind2Q2 = B.calc_pressure(dQ1, dQ2, temp,
+#                                                           pres)
 # --------------------------------------------------------------------s
 
     # plotting
