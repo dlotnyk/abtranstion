@@ -14,6 +14,10 @@ from configa import config
 class QT_Grid(MysABdata):
     '''create a T vs Q grid for different pressures'''
     flag_plot = True
+    tab_qt = 'tab_qt'
+    tab_params = 'tab_params'
+    grid_pressures = (22.5, 22.25, 22, 21.75, 21.6, 21.4)
+
     def __init__(self, conf, data_dir):
         MysABdata.__init__(self, conf, data_dir)
 
@@ -113,7 +117,11 @@ class QT_Grid(MysABdata):
         ax2.legend()
 #        ax2.set_yscale('log')
         plt.grid()
-        return arr[num_ar][0], 1/Qhec, np.mean(Q2[0:10])
+        pr = arr[num_ar][0]
+        Qc1 = 1/Qhec
+        Qc2 = np.mean(Q2[0:10])
+        return pr, (Qc1, Qc2), zip(Q1[0:len(Thec)], Thec, rQ1, sqT1),\
+                zip(Q2[0:num2], Tic, rQ2, sqT2), fit
 
     @my_logger
     @time_this
@@ -237,6 +245,145 @@ class QT_Grid(MysABdata):
             plt.grid()
         return T, y, tt 
 
+    @time_this
+    @my_logger
+    def create_tableQT(self, tb_name1):
+        '''create table with q, t, reverse Q and sqrt(1-t/tc)'''
+        table_HEC = ("CREATE TABLE `{}` ("
+             "`index` int AUTO_INCREMENT COMMENT 'index', "
+             "`revQ` DOUBLE NOT NULL COMMENT '1/Qc - 1/Q(T)', "
+             "`sqT` DOUBLE NOT NULL COMMENT 'sqrt(1-t/tc)', "
+             "`Q` DOUBLE NULL COMMENT 'Quality factor', "
+             "`T` DOUBLE NULL COMMENT 'Local temperature [mK]', "
+             "`P` DOUBLE NOT NULL COMMENT 'Pressure [bar]', "
+             "`FN` int NOT NULL COMMENT 'Fork Number', "
+             "PRIMARY KEY (`index`), "
+             "KEY `ii` (`sqT`)"
+             ") ENGINE=InnoDB".format(tb_name1))
+        alter_hec = ("ALTER TABLE {} AUTO_INCREMENT=1".format(tb_name1))
+        try:
+            print("Creating table for {}: ".format(tb_name1), end='')
+            self.cursor.execute(table_HEC)
+            self.cnx.commit()
+            self.cursor.execute(alter_hec)
+            self.cnx.commit()
+        except msql.Error as err:
+            if err.errno == errorcode.ER_TABLE_EXISTS_ERROR:
+                print("HEC table already exists.")
+            else:
+                print(err.msg)
+        else:
+            print("OK")
+
+    @time_this
+    @my_logger
+    def create_tableparams(self, tb_name1):
+        '''create table of 3rd order fit parameters '''
+        table_HEC = ("CREATE TABLE `{}` ("
+             "`index` int AUTO_INCREMENT COMMENT 'index', "
+             "`P` DOUBLE NOT NULL COMMENT 'Pressure [bar]', "
+             "`a0` DOUBLE NOT NULL COMMENT 'a0', "
+             "`a1` DOUBLE NOT NULL COMMENT 'a1', "
+             "`a2` DOUBLE NOT NULL COMMENT 'a2', "
+             "`a3` DOUBLE NOT NULL COMMENT 'a3', "
+             "PRIMARY KEY (`P`), "
+             "KEY `ii` (`index`)"
+             ") ENGINE=InnoDB".format(tb_name1))
+        alter_hec = ("ALTER TABLE {} AUTO_INCREMENT=1".format(tb_name1))
+        try:
+            print("Creating table for {}: ".format(tb_name1), end='')
+            self.cursor.execute(table_HEC)
+            self.cnx.commit()
+            self.cursor.execute(alter_hec)
+            self.cnx.commit()
+        except msql.Error as err:
+            if err.errno == errorcode.ER_TABLE_EXISTS_ERROR:
+                print("HEC table already exists.")
+            else:
+                print(err.msg)
+        else:
+            print("OK")
+
+    def __sq_qt(self, q, t, rq, sqt, p, fn):
+        '''insert valueus to sql tables calculated in QtoT  
+        pr - pressure; zqt1 - zip(q, t, rq, sqT)
+        fit - fit params'''
+        query1 = ("INSERT INTO {0} "
+                 "(`revQ`, `sqT`, `Q`, `T`, `P`, `FN`) "
+                 "VALUES ('{1}', {2}, {3}, {4}, {5}, {6}) "
+                 .format(self.tab_qt, rq, sqt, q, t, p, fn))
+        self.cursor.execute(query1)
+
+    def __sq_params(self, p, fit):
+        '''insert valueus to sql tables calculated in QtoT  
+        p - pressure; 
+        fit - fit params'''
+        query1 = ("INSERT INTO {0} "
+                 "(`P`, `a0`, `a1`, `a2`, `a3`) "
+                 "VALUES ('{1}', {2}, {3}, {4}, {5}) "
+                 .format(self.tab_params, p, fit[0], fit[1], fit[2], fit[3]))
+        self.cursor.execute(query1)
+
+    @my_logger
+    @time_this
+    def insert_qt_params(self, pr, zqt1, zqt2, fit):
+        '''insert valueus to sql tables calculated in QtoT  
+        pr - pressure; zqt1 - zip(q, t, rq, sqT)
+        fit - fit params'''
+        for ii in zqt1:
+            self.__sq_qt(ii[0], ii[1], ii[2], ii[3], pr, 1)
+        self.cnx.commit()
+        print('Pressure {}; fork1'.format(pr))
+        self.__sq_params(pr, fit)
+        self.cnx.commit()
+        print('Pressure {}; fit'.format(pr))
+        for ii in zqt2:
+            self.__sq_qt(ii[0], ii[1], ii[2], ii[3], pr, 2)
+        self.cnx.commit()
+        print('Pressure {}; fork2'.format(pr))
+        
+    @my_logger
+    @time_this
+    def setdata_qt_params(self, arr):
+        '''drop if any, create and insert data for qt and fit parameters'''
+        self.drop_table(self.tab_qt)
+        self.drop_table(self.tab_params)
+        self.create_tableQT(self.tab_qt)
+        self.create_tableparams(self.tab_params)
+        arr_s = np.shape(arr)[0]
+        for ii in range(0, arr_s):
+            p, Qct, qt1, qt2, fit = self.QtoT(arr, ii)
+            self.insert_qt_params(p, qt1, qt2, fit)
+
+    @my_logger
+    @time_this
+    def select_qt(self, p, fn):
+        '''select 1/q and sqrt(T) for pressure and desired fork'''
+        pl = p-0.01
+        ph = p+0.01 
+        query = ("SELECT `revQ`, `sqT` FROM {} WHERE `P` >= '{}' AND `P` <= "
+                "'{}' AND `FN` = '{}' "
+        "ORDER BY `sqT` ASC".format(self.tab_qt, str(pl), str(ph), str(fn)))
+        self.cursor.execute(query)
+        data = self.cursor.fetchall()
+        rQ = tuple([ii[0] for ii in data])
+        sqT = tuple([ii[1] for ii in data])
+        return rQ, sqT
+       
+    @my_logger
+    @time_this
+    def select_params(self, p):
+        '''select parameters for a pressure p'''
+        pl = p-0.01
+        ph = p+0.01
+        query = ("SELECT * FROM {} WHERE `P` >= '{}' AND `P` <= '{}'"
+                .format(self.tab_params, str(pl), str(ph)))
+#        print(query)
+        self.cursor.execute(query)
+        data = self.cursor.fetchall()
+        fit = (data[0][2], data[0][3], data[0][4], data[0][5])
+        return fit
+
 
 # -------------------main----------------
 if __name__ == '__main__':
@@ -247,24 +394,29 @@ if __name__ == '__main__':
     B.table_name = 'data'
     B.flag_plot = False
     P = []
-    Q1 = []
-    Q2 = []
+    Q1c = []
+    Q2c = []
     B.qttime = B.dataset(q1=3, q2=4, temp=2, pressure=7, time=1)
-    arr = B.import_grid()
-    for ii in range(0, 5):
-        p, Qc1, Qc2 = B.QtoT(arr, ii)
-        P.append(p)
-        Q1.append(Qc1)
-        Q2.append(Qc2)
-        print(p, Qc1, Qc2)
-    fig1 = plt.figure(10, clear=True)
-    ax1 = fig1.add_subplot(111)
-    ax1.set_xlabel(r'P [bar]')
-    ax1.set_ylabel(r'Q$_c$')
-    ax1.set_title(r'Q$_c$ vs P dependence (main)')
-    ax1.scatter(P, Q2, color='blue', s=1, label='IC')
-    ax1.scatter(P, Q1, color='green', s=1, label='HEC')
-    ax1.legend()
-    plt.grid()
+    rQ, sqT = B.select_qt(B.grid_pressures[0], 1)
+    fit = B.select_params(B.grid_pressures[0])
+    print(rQ[0], sqT[0], fit)
+
+#    arr = B.import_grid()
+#    p, Qct, qt1, qt2, fit = B.setdata_qt_params(arr)
+#    fig2 = plt.figure(11, clear=True)
+#    ax2 = fig2.add_subplot(111)
+#    ax2.set_xlabel('T [mk]')
+#    ax2.set_ylabel('Q')
+#    ax2.set_prop_cycle(color=['red', 'green', 'blue', 'black', 'cyan',
+#        'magenta', 'orange'])
+#    fig1 = plt.figure(10, clear=True)
+#    ax1 = fig1.add_subplot(111)
+#    ax1.set_xlabel(r'P [bar]')
+#    ax1.set_ylabel(r'Q$_c$')
+#    ax1.set_title(r'Q$_c$ vs P dependence (main)')
+#    ax1.scatter(P, Q2c, color='blue', s=10, label='IC')
+#    ax1.scatter(P, Q1c, color='green', s=10, label='HEC')
+#    ax1.legend()
+#    plt.grid()
     plt.show()
     B.close_f()

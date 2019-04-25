@@ -146,8 +146,8 @@ class MysABdata(ABData):
 # -------------------main----------------
 if __name__ == '__main__':
     data_dir = "d:\\dima\\proj\\ab_trans\\data\\"
-    t1 = datetime.datetime(2019, 2, 24, 0, 0, 0, 0)
-    t2 = datetime.datetime(2019, 2, 28, 0, 0, 0, 0)
+    t1 = datetime.datetime(2019, 4, 15, 22, 30, 0, 0)
+    t2 = datetime.datetime(2019, 4, 21, 11, 30, 0, 0)
     B = MysABdata(config, data_dir)
     B.table_name = 'data'
     B.qttime = B.dataset(q1=3, q2=4, temp=2, pressure=7, time=1)
