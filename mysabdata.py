@@ -140,14 +140,14 @@ class MysABdata(ABData):
         print("AB Pressure in IC is ", p2)
         print("Tab in HEC ", t1)
         print("Tab in IC ", t2)
-        return 0, ind1Q1, ind2Q1, ind1Q1, ind1Q2
+        return 0, ind1Q1, ind1Q2, ind1Q1, ind1Q2
 
 
 # -------------------main----------------
 if __name__ == '__main__':
     data_dir = "d:\\dima\\proj\\ab_trans\\data\\"
-    t1 = datetime.datetime(2019, 4, 15, 22, 30, 0, 0)
-    t2 = datetime.datetime(2019, 4, 21, 11, 30, 0, 0)
+    t1 = datetime.datetime(2019, 7, 25, 0, 0, 0, 0)
+    t2 = datetime.datetime(2019, 7, 25, 8, 0, 0, 0)
     B = MysABdata(config, data_dir)
     B.table_name = 'data'
     B.qttime = B.dataset(q1=3, q2=4, temp=2, pressure=7, time=1)
@@ -155,11 +155,11 @@ if __name__ == '__main__':
     time, Q2, Q1, temp, pres, date, dQ2, dQ1 = B.select_interval(
         B.table_name, t1, t2)
     p1 = np.nanmean(pres)
-    rate, ind1Q1, ind2Q1, ind1Q2, ind2Q2 = B.calc_params(dQ1, dQ2, temp,
-                                                         time, pres)
+#    rate, ind1Q1, ind2Q1, ind1Q2, ind2Q2 = B.calc_params(dQ1, dQ2, temp,
+#                                                         time, pres)
 
-#    rate, ind1Q1, ind2Q1, ind1Q2, ind2Q2 = B.calc_pressure(dQ1, dQ2, temp,
-#                                                           pres)
+    rate, ind1Q1, ind2Q1, ind1Q2, ind2Q2 = B.calc_pressure(dQ1, dQ2, temp,
+                                                           pres)
 # --------------------------------------------------------------------s
 
     # plotting

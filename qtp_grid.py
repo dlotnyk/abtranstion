@@ -1,6 +1,11 @@
 import mysql.connector as msql
+import scipy.signal as sci
+from mpl_toolkits.mplot3d import Axes3D
+from matplotlib.ticker import LinearLocator, FormatStrFormatter
 import matplotlib.pyplot as plt
+from matplotlib import cm
 from mysabdata import MysABdata
+from calibration import QT_calibration
 from abres import time_this
 from abres import my_logger
 from mysql.connector import errorcode
@@ -11,7 +16,7 @@ sys.path.insert(0, 'd:\\dima\\proj\\ab_trans')
 from configa import config
 
 
-class QT_Grid(MysABdata):
+class QT_Grid(QT_calibration):
     '''create a T vs Q grid for different pressures'''
     flag_plot = True
     tab_qt = 'tab_qt'
@@ -74,14 +79,13 @@ class QT_Grid(MysABdata):
         d3 = self.dt_parse(arr[num_ar][3])
         d4 = self.dt_parse(arr[num_ar][4])
         tc = self.PtoTc(arr[num_ar][0])
-      
         _, _, Q1, temp, _, date, _, dQ1 = MysABdata.select_interval(
             self, self.table_name, d1, d2)
         time = self.dt_time(date)
         numm = np.argmax(np.abs(dQ1))
         numm -= 50
         fit, rQ1, Qhec, Thec, sqT1 = self.revQtoT_hec(time[0:numm], Q1[0:numm],
-                temp[0:numm], tc)
+            temp[0:numm], tc)
         _, Q2, _, _, _, date2, dQ2, _ = MysABdata.select_interval(
                 self, self.table_name, d3, d4)
         num2 = np.argmax(np.abs(dQ2))
@@ -119,7 +123,8 @@ class QT_Grid(MysABdata):
         plt.grid()
         pr = arr[num_ar][0]
         Qc1 = 1/Qhec
-        Qc2 = np.mean(Q2[0:10])
+#        Qc2 = np.mean(Q2[0:10])
+        Qc2 = np.nanmin(Q2)
         return pr, (Qc1, Qc2), zip(Q1[0:len(Thec)], Thec, rQ1, sqT1),\
                 zip(Q2[0:num2], Tic, rQ2, sqT2), fit
 
@@ -131,7 +136,8 @@ class QT_Grid(MysABdata):
         2. Q to T based on T(time)
         fit_nz - fit params; qq=1/q; tt = sqrt...'''
         numf = 3
-        Qc = 1/np.mean(Q[0:10])
+#        Qc = 1/np.mean(Q[0:10])
+        Qc = 1/np.nanmin(Q)
         Q1 = sorted(self.QtorevQ(Q, Qc)) # 1/Q
         fit_t = np.polyfit(time, T, 1) # T(t)
         fit_fnt = np.poly1d(fit_t)
@@ -141,14 +147,21 @@ class QT_Grid(MysABdata):
         lt = self.TtosqT(T1, Tc)    #sqrt(1 - T/tc) 
         qq, tt = self.QTnoZer(Q1, lt)
         w = np.ones(len(qq))
-        w[0:20] = 5
-        w[-10:-1] = 5
+        midp = int(len(qq)*0.75)
+        w[10:20] = 5
+        #w[-10:-1] = 5
+        w[midp:midp+10] = 5
         fit_nz = np.polyfit(qq, tt, numf, w=w)
         rev_f = np.poly1d(fit_nz)
         Thec = self.SqTtoT(tt, Tc)
+        #derivative
+        wind = 11
+        poly = 2
+        dQ1 = sci.savgol_filter(qq, wind, poly, deriv=2)
+        #plot
         if self.flag_plot:
             fig1 = plt.figure(2, clear=True)
-            ax1 = fig1.add_subplot(111)
+            ax1 = fig1.add_subplot(211)
             ax1.set_xlabel(r'Q(T$_c$)$^{-1}$ - Q(T)$^{-1}$')
             ax1.set_ylabel('(1 - T/T$_c$)$^{1/2}$')
             ax1.set_title("Q --> T for HEC")
@@ -158,13 +171,18 @@ class QT_Grid(MysABdata):
     #        ax1.set_xscale('log')
             ax1.legend()
             plt.grid()
+            ax2 = fig1.add_subplot(212)
+            ax2.scatter(tt, dQ1, s=5)
+            ax2.set_ylim(np.amin(dQ1), np.amax(dQ1))
+            plt.grid()
         return fit_nz, qq, Qc, Thec, rev_f(qq) 
 
     @my_logger
     @time_this
     def revQtoT_ic(self, Q, Qh, fit, Tc):
         '''1/Q to T for IC chamber'''
-        dq = np.mean(Q[0:10]) - 1/Qh
+#        dq = np.mean(Q[0:10]) - 1/Qh
+        dq = np.nanmin(Q) - 1/Qh
         rev_f = np.poly1d(fit)
         Q1 = sorted([ii-dq for ii in Q])
         Qc = 1/np.mean(Q1[0:10])
@@ -219,7 +237,7 @@ class QT_Grid(MysABdata):
         T1 = []
         Q1 = []
         for ii, jj in zip(Q, T):
-            if ii >= 0:
+            if (jj >= 0) and (ii >= 0):
                 Q1.append(ii)
                 T1.append(np.sqrt(jj))
         return Q1, T1
@@ -358,7 +376,8 @@ class QT_Grid(MysABdata):
     @my_logger
     @time_this
     def select_qt(self, p, fn):
-        '''select 1/q and sqrt(T) for pressure and desired fork'''
+        '''select 1/q and sqrt(T) for pressure and desired fork
+        fn = 1 - HEC; fn = 2 - IC'''
         pl = p-0.01
         ph = p+0.01 
         query = ("SELECT `revQ`, `sqT` FROM {} WHERE `P` >= '{}' AND `P` <= "
@@ -369,7 +388,7 @@ class QT_Grid(MysABdata):
         rQ = tuple([ii[0] for ii in data])
         sqT = tuple([ii[1] for ii in data])
         return rQ, sqT
-       
+     
     @my_logger
     @time_this
     def select_params(self, p):
@@ -382,7 +401,30 @@ class QT_Grid(MysABdata):
         self.cursor.execute(query)
         data = self.cursor.fetchall()
         fit = (data[0][2], data[0][3], data[0][4], data[0][5])
-        return fit
+        return np.asarray(fit)
+
+    @my_logger
+    @time_this
+    def map3D(self):
+        '''plot a 3D map'''
+        sT = np.linspace(0, 0.01, 100)
+        p = np.asarray(self.grid_pressures)
+        sizeP = np.shape(p)[0]
+        sizeT = np.shape(sT)[0]
+        Z = np.ones((sizeT, sizeP))
+        for id1, p1 in enumerate(p):
+            fit1 = self.select_params(p1)
+            r_fit = np.poly1d(fit1)
+            for id2, x in enumerate(sT):
+                Z[id2][id1] = r_fit(x)
+        sT, p = np.meshgrid(p, sT)
+        fig = plt.figure(13, clear=True)
+        ax1 = fig.gca(projection='3d')
+#        surf = ax1.plot_surface(p, sT, Z, cmap=cm.coolwarm)
+        wa = ax1.plot_wireframe(p, sT, Z)
+        ax1.set_xlabel(r'$\sqrt{1-T/T_c}$')
+        ax1.set_ylabel('P [bar]')
+        ax1.set_zlabel(r'Q$^{-1}$(T$_c$) - Q$^{-1}$(T)')
 
 
 # -------------------main----------------
@@ -392,31 +434,33 @@ if __name__ == '__main__':
     t2 = datetime.datetime(2019, 4, 10, 9, 0, 0, 0)
     B = QT_Grid(config, data_dir)
     B.table_name = 'data'
-    B.flag_plot = False
+    B.flag_plot = False 
     P = []
     Q1c = []
     Q2c = []
     B.qttime = B.dataset(q1=3, q2=4, temp=2, pressure=7, time=1)
     rQ, sqT = B.select_qt(B.grid_pressures[0], 1)
     fit = B.select_params(B.grid_pressures[0])
-    print(rQ[0], sqT[0], fit)
+#    print(rQ[0], sqT[0], fit)
+    arr = B.import_grid()
+    p, Qct, qt1, qt2, fit1 = B.QtoT(arr, 0)
+    B.imp_QT(arr, 0)
+    print('main {}'.format(p))
+#    print(np.poly1d(fit), np.poly1d(fit1))
+#    B.setdata_qt_params(arr)
+    #B.map3D()
 
-#    arr = B.import_grid()
-#    p, Qct, qt1, qt2, fit = B.setdata_qt_params(arr)
 #    fig2 = plt.figure(11, clear=True)
 #    ax2 = fig2.add_subplot(111)
 #    ax2.set_xlabel('T [mk]')
 #    ax2.set_ylabel('Q')
 #    ax2.set_prop_cycle(color=['red', 'green', 'blue', 'black', 'cyan',
 #        'magenta', 'orange'])
-#    fig1 = plt.figure(10, clear=True)
-#    ax1 = fig1.add_subplot(111)
-#    ax1.set_xlabel(r'P [bar]')
-#    ax1.set_ylabel(r'Q$_c$')
-#    ax1.set_title(r'Q$_c$ vs P dependence (main)')
-#    ax1.scatter(P, Q2c, color='blue', s=10, label='IC')
-#    ax1.scatter(P, Q1c, color='green', s=10, label='HEC')
-#    ax1.legend()
-#    plt.grid()
+#    for ii in B.grid_pressures:
+#        rq1, sqT1 = B.select_qt(ii, 1)
+#        rq2, sqT2 = B.select_qt(ii, 2)
+#        ax2.scatter(sqT1, rq1, s=10)
+#        ax2.scatter(sqT2, rq2, s=3)
+#    plt.grid() 
     plt.show()
     B.close_f()
