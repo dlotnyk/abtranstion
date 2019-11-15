@@ -12,3 +12,5 @@ abtr/
 # Spyder project settings
 .spyderproject
 .spyproject
+/venv/
+.idea/
