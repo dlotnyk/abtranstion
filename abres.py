@@ -169,7 +169,8 @@ class ABData():
     @time_this
     def drop_table(self, tb_name):
         '''drop db_name table'''
-        query = ("DROP TABLE {}".format(tb_name))
+        query = ("DROP TABLE IF EXISTS {} ".format(tb_name))
+        print('Drop table: OK')
         self.cursor.execute(query)
 # -------------------------------------------------------------
 

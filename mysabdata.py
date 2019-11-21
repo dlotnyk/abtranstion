@@ -7,6 +7,7 @@ from mysql.connector import errorcode
 import sys
 import datetime
 import numpy as np
+from cryptography.fernet import Fernet
 sys.path.insert(0, 'd:\\dima\\proj\\ab_trans')
 from configa import config
 # another class for mysql connection
@@ -140,14 +141,20 @@ class MysABdata(ABData):
         print("AB Pressure in IC is ", p2)
         print("Tab in HEC ", t1)
         print("Tab in IC ", t2)
-        return 0, ind1Q1, ind2Q1, ind1Q1, ind1Q2
+        return 0, ind1Q1, ind1Q2, ind1Q1, ind1Q2
 
 
 # -------------------main----------------
 if __name__ == '__main__':
+    pd = config["password"].encode()
+    with open("key.key", "rb") as f:
+        keyb = f.read()
+    fern = Fernet(keyb)
+    pwd = fern.decrypt(pd)
+    config["password"] = pwd.decode()
     data_dir = "d:\\dima\\proj\\ab_trans\\data\\"
-    t1 = datetime.datetime(2019, 3, 5, 15, 0, 0, 0)
-    t2 = datetime.datetime(2019, 3, 10, 18, 0, 0, 0)
+    t1 = datetime.datetime(2019, 6, 24, 2, 0, 0, 0)
+    t2 = datetime.datetime(2019, 6, 24, 7, 0, 0, 0)
     B = MysABdata(config, data_dir)
     B.table_name = 'data'
     B.qttime = B.dataset(q1=3, q2=4, temp=2, pressure=7, time=1)
