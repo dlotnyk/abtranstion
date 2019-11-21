@@ -1,7 +1,0 @@
-name: abtr
-dependencies:
-        - numpy
-        - scipy
-        - matplotlib
-        - sqlite
-        - mysql-connector-python

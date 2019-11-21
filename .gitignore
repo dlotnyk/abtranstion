@@ -14,3 +14,4 @@ abtr/
 .spyproject
 /venv/
 .idea/
+/key.key
