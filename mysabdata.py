@@ -41,6 +41,14 @@ class MysABdata(ABData):
             if self.cnx:
                 self.cnx.close()
 
+    def close_mysql(self):
+        """
+        close connection
+        """
+        self.cursor.close()
+        self.cnx.close()
+        print("Mysql connection disconnected")
+
     @my_logger
     @time_this
     def import_fun(self, path_press):
@@ -105,10 +113,16 @@ class MysABdata(ABData):
         assert t2 > t1, "t2 should be > t1"
         query = ("SELECT * FROM {} WHERE `date` >= '{}' AND `date` <= '{}' "
         "ORDER BY `date` ASC".format(tb_name, str(t1), str(t2)))
-        self.cursor.execute(query)
-        data = self.cursor.fetchall()
-        res = self._removeNull(data)
-        return res
+        try:
+            self.cursor.execute(query)
+            data = self.cursor.fetchall()
+            res = self._removeNull(data)
+        except Exception as ex:
+            print(f"No data selected: {ex}")
+            self.close_mysql()
+            raise ConnectionError
+        else:
+            return res
 
     def _removeNull(self, res):
         '''remove nulls and convert it to pyhonic nan's'''
@@ -153,8 +167,11 @@ if __name__ == '__main__':
     pwd = fern.decrypt(pd)
     config["password"] = pwd.decode()
     data_dir = "d:\\dima\\proj\\ab_trans\\data\\"
-    t1 = datetime.datetime(2019, 6, 24, 2, 0, 0, 0)
-    t2 = datetime.datetime(2019, 6, 24, 7, 0, 0, 0)
+
+    t1 = datetime.datetime(2019, 7, 5, 11, 00, 0, 0)
+    t2 = datetime.datetime(2019, 7, 6, 11, 30, 0, 0)
+
+
     B = MysABdata(config, data_dir)
     B.table_name = 'data'
     B.qttime = B.dataset(q1=3, q2=4, temp=2, pressure=7, time=1)
@@ -162,11 +179,8 @@ if __name__ == '__main__':
     time, Q2, Q1, temp, pres, date, dQ2, dQ1 = B.select_interval(
         B.table_name, t1, t2)
     p1 = np.nanmean(pres)
-    rate, ind1Q1, ind2Q1, ind1Q2, ind2Q2 = B.calc_params(dQ1, dQ2, temp,
-                                                         time, pres)
-
-#    rate, ind1Q1, ind2Q1, ind1Q2, ind2Q2 = B.calc_pressure(dQ1, dQ2, temp,
-#                                                           pres)
+    rate, ind1Q1, ind2Q1, ind1Q2, ind2Q2 = B.calc_params(dQ1, dQ2, temp, time, pres)
+    #rate, ind1Q1, ind2Q1, ind1Q2, ind2Q2 = B.calc_pressure(dQ1, dQ2, temp, pres)
 # --------------------------------------------------------------------s
 
     # plotting
@@ -176,11 +190,11 @@ if __name__ == '__main__':
     ax1.set_xlabel('date')
     ax1.set_title("Q vs time for "+str(p1)+" bar")
     ax1.scatter(date, Q1, color='green', s=1, label='HEC')
-    ax1.scatter(date, Q2, color='blue', s=1, label='IC')
-    ax1.scatter(date[ind1Q1], Q1[ind1Q1], color='red', s=10)
-    ax1.scatter(date[ind2Q1], Q1[ind2Q1], color='red', s=10)
-    ax1.scatter(date[ind1Q2], Q2[ind1Q2], color='red', s=10)
-    ax1.scatter(date[ind2Q2], Q2[ind2Q2], color='red', s=10)
+    ax1.scatter(date, Q2, color='magenta', s=1, label='IC')
+    ax1.scatter(date[ind1Q1], Q1[ind1Q1], color='black', s=12)
+    ax1.scatter(date[ind2Q1], Q1[ind2Q1], color='black', s=12)
+    ax1.scatter(date[ind1Q2], Q2[ind1Q2], color='black', s=12)
+    ax1.scatter(date[ind2Q2], Q2[ind2Q2], color='black', s=12)
     ax1.set_xlim(t1, t2)
     ax1.legend()
     plt.gcf().autofmt_xdate()
@@ -198,11 +212,11 @@ if __name__ == '__main__':
     ax3.set_xlabel('date')
     ax3.set_title("derivative vs time")
     ax3.scatter(date, dQ1, color='green', s=0.5)
-    ax3.scatter(date, dQ2, color='blue', s=0.5)
-    ax3.scatter(date[ind1Q1], dQ1[ind1Q1], color='red', s=10)
-    ax3.scatter(date[ind2Q1], dQ1[ind2Q1], color='red', s=10)
-    ax3.scatter(date[ind1Q2], dQ2[ind1Q2], color='red', s=10)
-    ax3.scatter(date[ind2Q2], dQ2[ind2Q2], color='red', s=10)
+    ax3.scatter(date, dQ2, color='magenta', s=0.5)
+    ax3.scatter(date[ind1Q1], dQ1[ind1Q1], color='black', s=12)
+    ax3.scatter(date[ind2Q1], dQ1[ind2Q1], color='black', s=12)
+    ax3.scatter(date[ind1Q2], dQ2[ind1Q2], color='black', s=12)
+    ax3.scatter(date[ind2Q2], dQ2[ind2Q2], color='black', s=12)
     ax3.set_xlim(t1, t2)
     plt.gcf().autofmt_xdate()
     plt.grid()
@@ -218,4 +232,4 @@ if __name__ == '__main__':
     plt.show()
     #------------- delete
     del time, Q1, Q2, temp, pres, date, dQ1, dQ2
-    B.close_f()
+    B.close_mysql()

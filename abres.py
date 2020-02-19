@@ -310,7 +310,7 @@ class ABData():
         ind2Q1 = ind2Q1+round(0.6*len(dQ1)) 
         ind2Q2 = ind2Q2+round(0.6*len(dQ2))
         print("Pressure is ", p1)
-        print("The Ramp is {} mK/hr".format(rate))
+        print("The T Ramp is {} mK/hr".format(rate))
         print("First der for HEC ", temp[ind1Q1])
         print("First der for IC ", temp[ind1Q2])
         print("Second der for HEC ", temp[ind2Q1])
