@@ -14,11 +14,16 @@ import os
 import matplotlib.pyplot as plt
 import scipy.signal as sci
 import collections
-# --------------------------------------------------------------------
+
+from logger import log_settings
+
+app_log = log_settings()
 
 
 def time_this(original_function):
-    '''Measures the processing time. Decorator'''
+    """
+    Timer decorator
+    """
     @wraps(original_function)
     def new_function(*args, **kwargs):
         import time
@@ -32,7 +37,9 @@ def time_this(original_function):
 
 
 def my_logger(orig_func):
-    '''Decorate function to write into log on the level ERROR'''
+    """
+    Logger decorator
+    """
     import logging
     logging.getLogger('').handlers = []
     logging.basicConfig(filename='work.log'.format(
@@ -49,11 +56,9 @@ def my_logger(orig_func):
                 frm[0:-1], args, kwargs))
         return orig_func(*args, **kwargs)
     return wrapper
-# -------------------------------------------------------------
-# -------------------------------------------------------------
 
 
-class ABData():
+class ABData:
     '''read from fies, create a sqlite database from date, universal time, Q, 
     Tmc and pressure'''
     # class attributes
@@ -71,21 +76,26 @@ class ABData():
         self.conf = conf
         self.data_dir = data_dir
         self.connect_loc(conf)
-# -------------------------------------------------------------
 
     def __repr__(self):
         return "{}".format(self.__class__.__name__)
-# -------------------------------------------------------------
+
     @my_logger
     @time_this
     def connect_loc(self, conf):
-        '''open connection to sql lite database'''
+        """
+        Opens sqlite3 connection
+        """
         assert type(conf) is str, "input parameter must be str"
-        self.autoinc = ''
-        self.cnx = sql.connect(conf)
-        self.cursor = self.cnx.cursor()
-        print('Connected!')
-# -------------------------------------------------------------
+        try:
+            self.autoinc = ''
+            self.cnx = sql.connect(conf)
+            self.cursor = self.cnx.cursor()
+            print('Connected!')
+        except Exception as ex:
+            self.close_f()
+            print("can not connect do lite db")
+
     @my_logger
     @time_this
     def close_f(self):
@@ -93,7 +103,7 @@ class ABData():
         self.cursor.close()
         self.cnx.close()
         print('Disconnected!')
-# -------------------------------------------------------------
+
     @my_logger
     @time_this
     def import_fun(self, path_press):
@@ -133,7 +143,7 @@ class ABData():
                 self.__update_table(self.table_name, (a, int(d[2]), \
                         float(d[6]), float(d1[6]), float(d[13]), press))
             self.cnx.commit()
-# -------------------------------------------------------------
+
     @my_logger
     @time_this
     def find_files(self):
@@ -143,14 +153,13 @@ class ABData():
                   for file in files if file.endswith(".dat")}
         assert len(ll) > 0, "no files in the directory"
         return ll
-# -------------------------------------------------------------
 
     def _gettime(self, date, time):
         '''get time in datetime from strings date and time'''
         mm, dd, yy = date.split('/')
         hh, mins, ss = time.split(':')
         return mm, dd, yy, hh, mins, ss
-# -------------------------------------------------------------
+
     @my_logger
     @time_this
     def create_table(self, db_name):
@@ -164,7 +173,7 @@ class ABData():
                  "Tmc real, "
                  "pressure real);".format(db_name))
         self.cursor.execute(query)
-# -------------------------------------------------------------
+
     @my_logger
     @time_this
     def drop_table(self, tb_name):
@@ -172,14 +181,13 @@ class ABData():
         query = ("DROP TABLE IF EXISTS {} ".format(tb_name))
         print('Drop table: OK')
         self.cursor.execute(query)
-# -------------------------------------------------------------
 
     def __update_table(self, tb_name, values):
         '''set a new values to the table'''
         query = "INSERT INTO %s (date, uni_time, Q1, Q2, Tmc, pressure) \
         VALUES (?, ?, ?, ?, ?, ?) " % tb_name
         self.cursor.execute(query, values)
-# -------------------------------------------------------------
+
     @my_logger
     @time_this
     def select_vals(self, tb_name):
@@ -190,7 +198,6 @@ class ABData():
         res = self._removeNull(data)
 #        print(data)
         return res
-# -------------------------------------------------------------
 
     def _removeNull(self, res):
         '''remove nulls and convert it to pyhonic nan's'''
@@ -209,7 +216,7 @@ class ABData():
             dat[ind] = x
         assert type(dat) is np.ndarray, "wrong output"    
         return dat
-    # -------------------------------------------------------------
+
     @my_logger
     @time_this
     def find_hec(self, files):
@@ -240,7 +247,7 @@ class ABData():
                     for line1 in infile1:
                         outfile1.write(line1)
         return path_press
-# -------------------------------------------------------------
+
     @my_logger
     @time_this
     def dir_scan(self):
@@ -254,7 +261,7 @@ class ABData():
             files = self.find_files()
             path_p = self.find_hec(files)
             self.import_fun(path_p)
-# -------------------------------------------------------------
+
     @my_logger
     @time_this
     def _forselect(self, tb_name, t1, t2):
@@ -268,7 +275,7 @@ class ABData():
         data = self.cursor.fetchall()
         res = self._removeNull(data)
         return res
-# -------------------------------------------------------------
+
     @my_logger
     @time_this
     def select_interval(self, tb_name, t1, t2):
@@ -291,7 +298,7 @@ class ABData():
         dQ2 = sci.savgol_filter(Q2, wind, poly, deriv=1)
         time = time-time[0]
         return time, Q1, Q2, temp, pres, date, dQ1, dQ2
-# -------------------------------------------------------------
+
 #    @my_logger
     @time_this
     def calc_params(self, dQ1, dQ2, temp1, time1, pres):
@@ -320,11 +327,8 @@ class ABData():
         return rate, ind1Q1, ind2Q1, ind1Q2, ind2Q2
 
 
-
-# -------------main--------------------------------------------
 if __name__ == '__main__':
     '''28.11 to 11.01'''
-
     conf_loc = "d:\\dima\\proj\\ab_trans\\ab_data.db"
     data_dir = "d:\\dima\\proj\\ab_trans\\data\\"
     t1 = datetime.datetime(2019, 2, 12, 10, 0, 0, 0)
