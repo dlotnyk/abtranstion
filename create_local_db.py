@@ -12,49 +12,11 @@ import os
 from typing import List, Tuple
 
 from logger import log_settings
-
+from db_tables import PrTable, DataTable, BufferTable, Base, buf_table_name, pr_table_name, raw_table_name
 app_log = log_settings()
-Base = declarative_base()
+# Base = declarative_base()
 n_hec_combine = "hs_combine.dat"
 n_ic_combine = "is_combine.dat"
-pr_table_name = "pr_table"
-raw_table_name = "rawdata"
-
-
-class PrTable(Base):
-    """
-    Pressure table
-    """
-    __tablename__ = pr_table_name
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    date = db.Column(db.String, unique=True, index=True)
-    pressure = db.Column(db.Float)
-
-    def __init__(self, date, pressure):
-        self.date = date
-        self.pressure = pressure
-
-
-class DataTable(Base):
-    """
-    ORM table for Raw Data
-    """
-    __tablename__ = raw_table_name
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    date = db.Column(db.String, unique=True, index=True)
-    uni_time = db.Column(db.Integer)
-    Q_hec = db.Column(db.Float)
-    Q_ic = db.Column(db.Float)
-    Tmc = db.Column(db.Float)
-    pressure = db.Column(db.Float)
-
-    def __init__(self, date, uni_time, Q_hec, Q_ic, Tmc, pressure):
-        self.date = date
-        self.uni_time = uni_time
-        self.Q_hec = Q_hec
-        self.Q_ic = Q_ic
-        self.Tmc = Tmc
-        self.pressure = pressure
 
 
 class LocalDb:
@@ -88,7 +50,7 @@ class LocalDb:
         self.rawdata_tb = db.Table(self.table_name, metadata,
                                    db.Column("id", db.Integer, primary_key=True, autoincrement=True),
                                    db.Column("date", db.String, unique=True, index=True),
-                                   db.Column("uni_time", db.Integer),
+                                   db.Column("uni_time"),
                                    db.Column("Q_hec", db.Float),
                                    db.Column("Q_ic", db.Float),
                                    db.Column("Tmc", db.Float),
@@ -107,10 +69,11 @@ class LocalDb:
         """
         metadata = db.MetaData()
         self.pressure_tb = db.Table(pr_table_name, metadata,
-                                   db.Column("id", db.Integer, primary_key=True, autoincrement=True),
-                                   db.Column("date", db.String, unique=True, index=True),
-                                   db.Column("pressure", db.Float)
-                                   )
+                                    db.Column("id", db.Integer, primary_key=True, autoincrement=True),
+                                    db.Column("date", db.String),
+                                    db.Column("uni_time", db.Integer, unique=True, index=True),
+                                    db.Column("pressure", db.Float)
+                                    )
         try:
             Base.metadata.create_all(self.db_engine)
         except Exception as ex:
@@ -118,25 +81,37 @@ class LocalDb:
         else:
             app_log.info(f"Table `{pr_table_name}` was successfully created")
 
-    def drop_table(self):
+    def create_buffer_table(self):
         """
-        Drops table
+        Creates a table with table name
         """
+        metadata = db.MetaData()
+        self.buf_tb = db.Table(buf_table_name, metadata,
+                               db.Column("id", db.Integer, primary_key=True, autoincrement=True),
+                               db.Column("date", db.String),
+                               db.Column("uni_time", db.Integer, unique=True, index=True),
+                               db.Column("Q_hec", db.Float),
+                               db.Column("Q_ic", db.Float),
+                               db.Column("Tmc", db.Float),
+                               )
         try:
-            DataTable.__table__.drop(self.db_engine)
-            app_log.info("Table successfully drops")
+            Base.metadata.create_all(self.db_engine)
         except Exception as ex:
-            app_log.error(f"Can not drop table: {ex}")
+            app_log.error(f"Can not create pressure table: `{ex}`")
+        else:
+            app_log.info(f"Table `{buf_table_name}` was successfully created")
 
-    def drop_pressure_table(self):
+    def drop_table(self, obj):
         """
         Drops table
         """
         try:
-            PrTable.__table__.drop(self.db_engine)
-            app_log.info("Pressure Table successfully drops")
+            obj.__table__.drop(self.db_engine)
+            app_log.info(f"Table `{obj.__tablename__}` successfully drops")
+        except db.exc.OperationalError:
+            app_log.warning(f"Can not drop `{obj.__tablename__}` table. It does not exists")
         except Exception as ex:
-            app_log.error(f"Can not drop pressure table: {ex}")
+            app_log.error(f"Can not drop `{obj.__tablename__}`: {ex}")
 
     def open_session(self):
         """
@@ -183,13 +158,20 @@ class LocalDb:
                 app_log.info(f"Check dir: `{ii}`")
                 work_dir = self.data_dir+ii+"\\"
                 if not self.is_folder_checked(work_dir):
+                    self.create_pressure_table()
                     hec_files, ic_files, p_list = self.find_files(work_dir)
-                    hec_combine = self.combine_files(work_dir, hec_files)
-                    ic_combine = self.combine_files(work_dir, ic_files, is_hec=False)
-                    p_path = os.path.join(work_dir, p_list[0])
-                    self.parse_insert(hec_combine, ic_combine)
-                    # path_p = self.find_hec(files)
-                    # self.import_fun(path_p)
+                    if self.files_validator(work_dir, hec_files, ic_files, p_list):
+                        self.drop_table(PrTable)
+                        continue
+                    else:
+                        hec_combine = self.combine_files(work_dir, hec_files)
+                        ic_combine = self.combine_files(work_dir, ic_files, is_hec=False)
+                        p_path = os.path.join(work_dir, p_list[0])
+                        self.parse_pressure(p_path)
+                        self.parse_insert(hec_combine, ic_combine)
+                        self.insert_into_main()
+                        self.drop_table(PrTable)
+                        self.drop_table(BufferTable)
                 else:
                     app_log.info("Directory already parsed")
         except Exception as ex:
@@ -210,7 +192,8 @@ class LocalDb:
         else:
             return False
 
-    def find_files(self, work_dir: str) -> Tuple[List, List, List]:
+    @staticmethod
+    def find_files(work_dir: str) -> Tuple[List, List, List]:
         """
         find dat files in directory, ignore sweep
         :param work_dir: path to working directory
@@ -232,28 +215,26 @@ class LocalDb:
                        for file in files if file.endswith(".dat") and "sweep" not in file.lower()
                        and "pres" in file.lower()
                        ]
-        self.files_validator(work_dir, hec_list, ic_list, p_list)
         return sorted(hec_list), sorted(ic_list), sorted(p_list)
 
-    def files_validator(self, work_dir: str,
+    @staticmethod
+    def files_validator(work_dir: str,
                         hec_list: List,
                         ic_list: List,
-                        p_list: List) -> None:
+                        p_list: List) -> bool:
         """
         Checks if list are not empty.
         :param work_dir: path to working directory
         :param hec_list: HEC files list
         :param ic_list: IC files list
         :param p_list: pressure files list
-        :raise: ValueError if one of the list is empty
+        :return: True if something wrong
         """
-        try:
-            if len(hec_list) == 0 or len(ic_list) == 0 or len(p_list) == 0:
-                raise ValueError
-        except ValueError:
-            app_log.error(f"Folder `{work_dir}` does not have required files")
-            self.close_engine()
-            raise
+        if len(hec_list) == 0 or len(ic_list) == 0 or len(p_list) == 0:
+            app_log.warning(f"Folder `{work_dir}` does not have required files")
+            return True
+        else:
+            return False
 
     @staticmethod
     def combine_files(work_dir: str, file_list: List, is_hec=True) -> str:
@@ -276,30 +257,97 @@ class LocalDb:
                         output_file.write(line)
         return file_name
 
+    def add_table_entry(self, entry):
+        """
+        Add an entry to table
+        :param entry: entry to INSERT
+        Handles UNIQUE exception
+        """
+        try:
+            self.session.add(entry)
+        except db.exc.IntegrityError:
+            app_log.warning(f"Can not INSERT entry: {entry}")
+
+    def insert_into_main(self):
+        """
+        Insert data into the main rawtable
+        """
+        try:
+            app_log.info(f"Start insert to `{DataTable.__tablename__}`...")
+            buf_rec = self.session.query(BufferTable).order_by(BufferTable.uni_time).all()
+            pres_rec = self.session.query(PrTable).order_by(PrTable.uni_time).all()
+            counter = 0
+            pressure = pres_rec[counter].pressure
+            for item in buf_rec:
+                try:
+                    if item.uni_time > pres_rec[counter].uni_time:
+                        counter += 1
+                        pressure = pres_rec[counter].pressure
+                except IndexError:
+                    pressure = pressure
+                data_db = DataTable(date=item.date,
+                                    uni_time=item.uni_time,
+                                    Q_hec=item.Q_hec,
+                                    Q_ic=item.Q_ic,
+                                    Tmc=item.Tmc,
+                                    pressure=pressure
+                                    )
+                self.add_table_entry(data_db)
+        except Exception as ex:
+            app_log.error(f"Can not insert into main table: {ex}")
+        else:
+            self.session.commit()
+            app_log.info(f"Data committed to `{DataTable.__tablename__}`")
+
     def parse_insert(self, path_hec: str, path_ic: str):
         """
-        Parse files and update the db table.
+        Parse files and update the bufffer db table.
         :param path_hec: path to hec file
         :param path_ic: path to ic file
         """
         try:
-            app_log.info("Start inserting data to db...")
+            app_log.info(f"Start inserting to `{BufferTable.__tablename__}`...")
             with open(path_hec, "r") as f_hec, open(path_ic, "r") as f_ic:
                 for line_hec, line_ic in zip(f_hec, f_ic):
                     d_hec = line_hec.split()
                     d_ic = line_ic.split()
-                    data_db = DataTable(date=self.get_date(d_hec[0], d_hec[1]),
-                                        uni_time=int(d_hec[2]),
-                                        Q_hec=float(d_hec[6]),
-                                        Q_ic=float(d_ic[6]),
-                                        Tmc=float(d_hec[13]),
-                                        pressure=0)
-                    self.session.add(data_db)
+                    dstr = self.get_date(d_hec[0], d_hec[1])
+                    dtime = self.str_to_datetime(dstr)
+                    data_db = BufferTable(date=dstr,
+                                          uni_time=int(dtime.timestamp()),
+                                          Q_hec=float(d_hec[6]),
+                                          Q_ic=float(d_ic[6]),
+                                          Tmc=float(d_hec[13])
+                                          )
+                    self.add_table_entry(data_db)
         except Exception as ex:
             app_log.error(f"Fails inserting: {ex}")
         else:
             self.session.commit()
-            app_log.info("Data committed to db")
+            app_log.info(f"Data committed to `{BufferTable.__tablename__}`")
+
+    def parse_pressure(self, path_p: str):
+        """
+        Parse files and update the db table.
+        :param path_p: path to pressure file
+        """
+        try:
+            app_log.info(f"Start inserting to `{PrTable.__tablename__}`...")
+            with open(path_p, "r") as f_p:
+                next(f_p)
+                for line_p in f_p:
+                    d_pres = line_p.split()
+                    dstr = self.get_date(d_pres[0], d_pres[1])
+                    dtime = self.str_to_datetime(dstr)
+                    data_db = PrTable(date=dstr,
+                                      uni_time=int(dtime.timestamp()),
+                                      pressure=float(d_pres[3]))
+                    self.add_table_entry(data_db)
+        except Exception as ex:
+            app_log.error(f"Fails inserting: {ex}")
+        else:
+            self.session.commit()
+            app_log.info(f"Data committed to `{PrTable.__tablename__}`")
 
     @staticmethod
     def get_date(dats: str, tims: str) -> str:
@@ -312,6 +360,15 @@ class LocalDb:
         mm, dd, yy = dats.split("/")
         hh, mins, ss = tims.split(":")
         return "20" + yy + "-" + mm + "-" + dd + " " + hh + ":" + mins + ":" + ss
+
+    def find_closest_time(self, dtime: int) -> float:
+        """
+        Find closest timestamp between data and pressure tables
+        :param dtime: time in integer
+        :return: pressure value closest to dtime timestamp
+        """
+        rec = self.session.query(PrTable).order_by(db.func.abs(dtime - PrTable.uni_time)).first()
+        return rec.pressure
 
     def select_time(self, start: datetime, stop: datetime) -> np.ndarray:
         """
@@ -375,17 +432,19 @@ class LocalDb:
 
 if __name__ == "__main__":
     app_log.info("Create db app starts.")
-    db_name = "ab_data.db"
-    data_dir = "k:\\data\\lab\\test\\"
+    db_name = "ab_data2.db"
+    data_dir = "k:\\data\\lab\\abdata\\"
     start = datetime(2019, 1, 25, 10, 0)
     stop = datetime(2019, 1, 25, 10, 30)
     loc = LocalDb(db_name, data_dir)
-    loc.drop_table()
-    loc.create_table()
+    loc.drop_table(BufferTable)
+    loc.drop_table(PrTable)
+    # loc.drop_table(DataTable)
+    # loc.create_table()
+    loc.create_buffer_table()
     loc.open_session()
     loc.dir_scan()
-    # loc.insert_one()
-    arr = loc.select_time(start, stop)
+    # arr = loc.select_time(start, stop)
     loc.close_session()
     loc.close_engine()
     app_log.info("Create db app ends")
