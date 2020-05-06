@@ -430,6 +430,8 @@ class QT_Grid(QT_calibration):
 # -------------------main----------------
 if __name__ == '__main__':
     data_dir = "d:\\dima\\proj\\ab_trans\\data\\"
+    start = grid_dict[5]["hec"]["start_time"]
+    stop = grid_dict[5]["hec"]["end_time"]
     t1 = datetime.datetime(2019, 4, 7, 15, 0, 0)
     t2 = datetime.datetime(2019, 4, 10, 9, 0, 0, 0)
     B = QT_Grid(config, data_dir)

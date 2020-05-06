@@ -8,6 +8,7 @@ from matplotlib import markers
 
 from logger import log_settings
 from create_local_db import LocalDb
+from grid_data import grid_dict
 
 app_log = log_settings()
 columns = {"id": [0, 0], "date": [1, "1"], "uni_time": [2, 2], "q_hec": [3, 3.5],
@@ -19,9 +20,24 @@ class ABCalc(LocalDb):
     Performs select from db and further calculations
     """
     def __init__(self, db_name, start_time, stop_time):
+        self.init_validator(start_time, stop_time)
         super().__init__(db_name)
         self.start_time = start_time
         self.stop_time = stop_time
+
+    @staticmethod
+    def init_validator(start_time, stop_time):
+        start_measurement = datetime(2018, 11, 27, 23, 59)
+        end_measurement = datetime(2019, 12, 23, 1, 0)
+        if stop_time < start_time:
+            app_log.error("Start time must be less than the Stop time!")
+            raise ValueError("Start time is larger than the Stop time")
+        if start_time < start_measurement or stop_time < start_measurement:
+            app_log.error(f"Wrong time limits. The data starts from: {start_measurement}")
+            raise ValueError("Wrong time limits")
+        if start_time > end_measurement or stop_time > end_measurement:
+            app_log.error(f"Wrong time limits. The data ends : {end_measurement}")
+            raise ValueError("Wrong time limits")
 
     @staticmethod
     def choose_column(col_name: str, array: np.ndarray):
@@ -88,8 +104,9 @@ class ABCalc(LocalDb):
             rate = fit[0] * 3600
             fitted_temp = np.poly1d(fit)
             arr_dict.update({"temp_rate": rate})
+            arr_dict.update({"fitted_temp": fitted_temp(arr_dict.get("uni_time"))})
             # get pressure
-            pr_mean = np.mean(arr_dict.get("pressure"))
+            pr_mean = np.nanmean(arr_dict.get("pressure"))
             arr_dict.update({"mean pressure": pr_mean})
             # first extremuma
             ind1_extr_hec = \
@@ -114,6 +131,7 @@ class ABCalc(LocalDb):
         else:
             app_log.info("Temperature sweep parameters are:")
             app_log.info(f"Pressure: {pr_mean} bar")
+            app_log.info(f"Tc acc to Greywall: {self.tc_greywall(pr_mean)} mK")
             app_log.info(f"The ramp: {rate} mK/hr")
             app_log.info("First extr for HEC: {} mK".format(fitted_temp(arr_dict.get("uni_time")[ind1_extr_hec])))
             app_log.info("First extr for IC: {} mK".format(fitted_temp(arr_dict.get("uni_time")[ind1_extr_ic])))
@@ -150,7 +168,7 @@ class ABCalc(LocalDb):
     def regular_ab_plot(self, fig_num: int, arr_dict: Dict):
         try:
             fig1 = plt.figure(fig_num, clear=True)
-            # first quater
+            # first quater Q vs date
             ax1 = fig1.add_subplot(221)
             ax1.set_ylabel('Q')
             ax1.set_xlabel('date')
@@ -169,16 +187,27 @@ class ABCalc(LocalDb):
             ax1.legend()
             plt.gcf().autofmt_xdate()
             plt.grid()
-            # second quater
+            # second quater Tmc vs Date
             ax2 = fig1.add_subplot(222)
             ax2.set_ylabel(r'$T_{MC}$')
             ax2.set_xlabel('Date')
             ax2.set_title(r'$T_{MC}$ vs time for both forks')
-            ax2.scatter(arr_dict.get("date"), arr_dict.get("Tmc"), color='green', s=0.5)
+            ax2.scatter(arr_dict.get("date"), arr_dict.get("Tmc"), color='green', s=0.5, label="raw")
+            if arr_dict.get("fitted_temp", None) is not None:
+                ax2.scatter(arr_dict.get("date"), arr_dict.get("fitted_temp"), color='red', s=0.5, label="fit")
+                ax2.scatter(arr_dict.get("date")[arr_dict.get("first_idx_hec")],
+                            arr_dict.get("fitted_temp")[arr_dict.get("first_idx_hec")], color='green', marker='s', s=20)
+                ax2.scatter(arr_dict.get("date")[arr_dict.get("second_idx_hec")],
+                            arr_dict.get("fitted_temp")[arr_dict.get("second_idx_hec")], color='green', marker='^', s=20)
+                ax2.scatter(arr_dict.get("date")[arr_dict.get("first_idx_ic")],
+                            arr_dict.get("fitted_temp")[arr_dict.get("first_idx_ic")], color='blue', marker='s', s=20)
+                ax2.scatter(arr_dict.get("date")[arr_dict.get("second_idx_ic")],
+                            arr_dict.get("fitted_temp")[arr_dict.get("second_idx_ic")], color='blue', marker='^', s=20)
             ax2.set_xlim(self.start_time, self.stop_time)
+            ax2.legend()
             plt.gcf().autofmt_xdate()
             plt.grid()
-            # third quater
+            # third quater dQ/dT vs Date
             ax3 = fig1.add_subplot(223)
             ax3.set_ylabel('dQ/dt')
             ax3.set_xlabel('date')
@@ -197,7 +226,7 @@ class ABCalc(LocalDb):
             # ax3.legend()
             plt.gcf().autofmt_xdate()
             plt.grid()
-            # fourth quater
+            # fourth quater. pressure vs Date
             ax4 = fig1.add_subplot(224)
             ax4.set_ylabel('Pressure')
             ax4.set_xlabel('date')
@@ -230,6 +259,19 @@ class ABCalc(LocalDb):
             app_log.info("Tab in IC {} mK".format(arr_dict.get("Tmc")[ind1_extr_ic]))
             return arr_dict
 
+    @staticmethod
+    def tc_greywall(p):
+        """
+        Obtains Tc according to Greywall
+        """
+        a0 = 0.929383750000000
+        a1 = 0.138671880000000
+        a2 = -0.006930218500000
+        a3 = 0.000256851690000
+        a4 = -0.000005724864400
+        a5 = 5.30E-08
+        return a0 + a1*p + a2*p**2 + a3*p**3 + a4*p**4 + a5*p**5
+
     def calculate_temperature_sweep(self):
         app_log.info("Temperature sweep is calculating...")
         self.open_session()
@@ -252,10 +294,10 @@ class ABCalc(LocalDb):
 if __name__ == "__main__":
     app_log.info("Calculation app starts.")
     db_name = "ab_data_upd.db"
-    start = datetime(2018, 11, 28, 10, 0)
-    stop = datetime(2018, 11, 28, 10, 10)
+    start = datetime(2019, 2, 21, 20, 0)
+    stop = datetime(2019, 2, 22, 2, 0)
     instance = ABCalc(db_name, start, stop)
-    # instance.calculate_temperature_sweep()
-    instance.calculate_pressure_sweep()
+    instance.calculate_temperature_sweep()
+    # instance.calculate_pressure_sweep()
     app_log.info("Calculation app ends")
 
