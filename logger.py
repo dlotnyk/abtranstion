@@ -13,7 +13,7 @@ def log_settings():
     console_handler.setFormatter(log_formatter)
     console_handler.setLevel(logging.INFO)
     app_log = logging.getLogger("AbDatabase")
-    app_log.setLevel(logging.INFO)
+    app_log.setLevel(logging.DEBUG)
     if len(app_log.handlers) < 2:
         app_log.addHandler(my_handler)
         app_log.addHandler(console_handler)

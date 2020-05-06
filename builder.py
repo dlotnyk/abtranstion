@@ -149,7 +149,7 @@ class DirectorDb:
         self._builder = builder
 
     def build_full_db(self) -> None:
-        app_log.info("Full builder starts")
+        app_log.debug("Full builder starts")
         self.builder.drop_table(self.builder.buffer_table)
         self.builder.drop_table(self.builder.pressure_table)
         self.builder.drop_table(self.builder.data_table)
@@ -159,13 +159,13 @@ class DirectorDb:
         self.builder.directory_scan()
         self.builder.close_session()
         self.builder.close_engine()
-        app_log.info("Full builder ends")
+        app_log.debug("Full builder ends")
 
     def build_minimal(self) -> None:
-        app_log.info("Minimal builder starts")
+        app_log.debug("Minimal builder starts")
         self.builder.open_session()
         self.builder.close_session()
         self.builder.close_engine()
-        app_log.info("Minimal builder ends")
+        app_log.debug("Minimal builder ends")
 
 

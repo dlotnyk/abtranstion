@@ -45,7 +45,7 @@ class LocalDb:
             connector = "sqlite:///" + self.db_path
             self.db_engine = db.create_engine(connector)
             self.session = None
-            app_log.info(f"Engine creates: `{self.db_name}`")
+            app_log.debug(f"Engine creates: `{self.db_name}`")
         except Exception as ex:
             app_log.error(f"Can not create engine: `{ex}`")
 
@@ -68,7 +68,7 @@ class LocalDb:
         except Exception as ex:
             app_log.error(f"Can not create table: `{ex}`")
         else:
-            app_log.info(f"Table `{self.table_name}` was successfully created")
+            app_log.debug(f"Table `{self.table_name}` was successfully created")
 
     def create_pressure_table(self):
         """
@@ -86,7 +86,7 @@ class LocalDb:
         except Exception as ex:
             app_log.error(f"Can not create pressure table: `{ex}`")
         else:
-            app_log.info(f"Table `{pr_table_name}` was successfully created")
+            app_log.debug(f"Table `{pr_table_name}` was successfully created")
 
     def create_buffer_table(self):
         """
@@ -106,7 +106,7 @@ class LocalDb:
         except Exception as ex:
             app_log.error(f"Can not create pressure table: `{ex}`")
         else:
-            app_log.info(f"Table `{buf_table_name}` was successfully created")
+            app_log.debug(f"Table `{buf_table_name}` was successfully created")
 
     def drop_table(self, obj):
         """
@@ -114,7 +114,7 @@ class LocalDb:
         """
         try:
             obj.__table__.drop(self.db_engine)
-            app_log.info(f"Table `{obj.__tablename__}` successfully drops")
+            app_log.debug(f"Table `{obj.__tablename__}` successfully drops")
         except db.exc.OperationalError:
             app_log.warning(f"Can not drop `{obj.__tablename__}` table. It does not exists")
         except Exception as ex:
@@ -127,7 +127,7 @@ class LocalDb:
         try:
             sess = sessionmaker(bind=self.db_engine)
             self.session = sess()
-            app_log.info(f"Session creates for: `{self.db_name}`")
+            app_log.debug(f"Session creates for: `{self.db_name}`")
         except Exception as ex:
             app_log.error(f"Can not create session: {ex}")
 
@@ -138,7 +138,7 @@ class LocalDb:
         try:
             if self.session is not None:
                 self.session.close()
-                app_log.info(f"Session `{self.db_name}` closed")
+                app_log.debug(f"Session `{self.db_name}` closed")
         except Exception as ex:
             app_log.error(f"Can not close session: {ex}")
 
@@ -148,7 +148,7 @@ class LocalDb:
         """
         try:
             self.db_engine.dispose()
-            app_log.info("db Engine disposed")
+            app_log.debug("db Engine disposed")
         except Exception as ex:
             app_log.error(f"Engine NOT disposed: {ex}")
 
@@ -281,7 +281,7 @@ class LocalDb:
         Insert data into the main rawtable
         """
         try:
-            app_log.info(f"Start insert to `{DataTable.__tablename__}`...")
+            app_log.debug(f"Start insert to `{DataTable.__tablename__}`...")
             buf_rec = self.session.query(BufferTable).order_by(BufferTable.uni_time).all()
             pres_rec = self.session.query(PrTable).order_by(PrTable.uni_time).all()
             counter = 0
@@ -306,7 +306,7 @@ class LocalDb:
             app_log.error(f"Can not insert into main table: {ex}")
         else:
             self.session.commit()
-            app_log.info(f"Data committed to `{DataTable.__tablename__}`")
+            app_log.debug(f"Data committed to `{DataTable.__tablename__}`")
 
     def parse_insert(self, path_hec: str, path_ic: str):
         """
@@ -315,7 +315,7 @@ class LocalDb:
         :param path_ic: path to ic file
         """
         try:
-            app_log.info(f"Start inserting to `{BufferTable.__tablename__}`...")
+            app_log.debug(f"Start inserting to `{BufferTable.__tablename__}`...")
             with open(path_hec, "r") as f_hec, open(path_ic, "r") as f_ic:
                 for line_hec, line_ic in zip(f_hec, f_ic):
                     d_hec = line_hec.split()
@@ -333,7 +333,7 @@ class LocalDb:
             app_log.error(f"Fails inserting: {ex}")
         else:
             self.session.commit()
-            app_log.info(f"Data committed to `{BufferTable.__tablename__}`")
+            app_log.debug(f"Data committed to `{BufferTable.__tablename__}`")
 
     def parse_pressure(self, path_p: str):
         """
@@ -341,7 +341,7 @@ class LocalDb:
         :param path_p: path to pressure file
         """
         try:
-            app_log.info(f"Start inserting to `{PrTable.__tablename__}`...")
+            app_log.debug(f"Start inserting to `{PrTable.__tablename__}`...")
             with open(path_p, "r") as f_p:
                 next(f_p)
                 for line_p in f_p:
@@ -356,7 +356,7 @@ class LocalDb:
             app_log.error(f"Fails inserting: {ex}")
         else:
             self.session.commit()
-            app_log.info(f"Data committed to `{PrTable.__tablename__}`")
+            app_log.debug(f"Data committed to `{PrTable.__tablename__}`")
 
     @staticmethod
     def get_date(dats: str, tims: str) -> str:
@@ -385,9 +385,11 @@ class LocalDb:
         :param start: start time of range as datetime object
         :param stop: stop time of range as datetime object
         :return: fetched data as numpy array
+        Note: uni_time will starts from 0
         """
         try:
-            app_log.info("Selecting requested data...")
+            app_log.debug("Selecting requested data...")
+            st_uni = 0
             count = self.session.query(DataTable).filter(DataTable.date >= start).\
                       filter(DataTable.date <= stop).count()
             self.check_response(count)
@@ -399,10 +401,12 @@ class LocalDb:
             rec = self.session.query(DataTable).filter(DataTable.date >= start).\
                       filter(DataTable.date <= stop).order_by(DataTable.date)
             for idx, item in enumerate(rec):
+                if idx == 0:
+                    st_uni = item.uni_time
                 item = self.check_null(item)
-                array[idx] = (item.id, item.date, item.uni_time,
+                array[idx] = (item.id, item.date, item.uni_time - st_uni,
                               item.Q_hec, item.Q_ic, item.Tmc, item.pressure)
-            app_log.info("Response array generated")
+            app_log.debug("Response array generated")
             return array
         except ValueError:
             app_log.warning("There are no data in selected date range!")
