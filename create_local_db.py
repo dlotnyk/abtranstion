@@ -5,7 +5,6 @@ Created on Mon Jan 14 13:17:13 2019
 """
 import numpy as np
 import sqlalchemy as db
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from datetime import datetime
 import os
@@ -13,17 +12,25 @@ from typing import List, Tuple
 
 from logger import log_settings
 from db_tables import PrTable, DataTable, BufferTable, Base, buf_table_name, pr_table_name, raw_table_name
+from builder import ConcreteDbBuilder, DirectorDb
 app_log = log_settings()
-# Base = declarative_base()
 n_hec_combine = "hs_combine.dat"
 n_ic_combine = "is_combine.dat"
 
 
 class LocalDb:
+    """
+    Create a local db based on sqlite3.
+    One main table with all data `rawtable`.
+    There are two additional tables buffer and pressure required for data
+    transfer from files to db.
+    Uses SQLAlchemy ORM for Create, Drop tables as well as INSERT and SELECT.
+    Examples is in __main__ part
+    """
     table_name = raw_table_name
     rawdata_tb = None
 
-    def __init__(self, db_name: str, data_dir: str) -> None:
+    def __init__(self, db_name: str, data_dir=None) -> None:
         """
         Creates db from data dir folder
         :param db_name: database name
@@ -257,16 +264,17 @@ class LocalDb:
                         output_file.write(line)
         return file_name
 
-    def add_table_entry(self, entry):
+    def add_table_entry(self, obj, entry):
         """
         Add an entry to table
+        :param obj: Table to add entry
         :param entry: entry to INSERT
         Handles UNIQUE exception
         """
-        try:
+        if self.session.query(obj).filter(obj.uni_time == entry.uni_time).count() < 1:
             self.session.add(entry)
-        except db.exc.IntegrityError:
-            app_log.warning(f"Can not INSERT entry: {entry}")
+        else:
+            app_log.warning(f"Can not INSERT entry: `{entry.date}` to `{obj.__tablename__}`")
 
     def insert_into_main(self):
         """
@@ -292,7 +300,8 @@ class LocalDb:
                                     Tmc=item.Tmc,
                                     pressure=pressure
                                     )
-                self.add_table_entry(data_db)
+                self.session.add(data_db)
+                # self.add_table_entry(data_db)
         except Exception as ex:
             app_log.error(f"Can not insert into main table: {ex}")
         else:
@@ -319,7 +328,7 @@ class LocalDb:
                                           Q_ic=float(d_ic[6]),
                                           Tmc=float(d_hec[13])
                                           )
-                    self.add_table_entry(data_db)
+                    self.add_table_entry(BufferTable, data_db)
         except Exception as ex:
             app_log.error(f"Fails inserting: {ex}")
         else:
@@ -342,7 +351,7 @@ class LocalDb:
                     data_db = PrTable(date=dstr,
                                       uni_time=int(dtime.timestamp()),
                                       pressure=float(d_pres[3]))
-                    self.add_table_entry(data_db)
+                    self.add_table_entry(PrTable, data_db)
         except Exception as ex:
             app_log.error(f"Fails inserting: {ex}")
         else:
@@ -432,19 +441,14 @@ class LocalDb:
 
 if __name__ == "__main__":
     app_log.info("Create db app starts.")
-    db_name = "ab_data2.db"
-    data_dir = "k:\\data\\lab\\abdata\\"
-    start = datetime(2019, 1, 25, 10, 0)
-    stop = datetime(2019, 1, 25, 10, 30)
-    loc = LocalDb(db_name, data_dir)
-    loc.drop_table(BufferTable)
-    loc.drop_table(PrTable)
-    # loc.drop_table(DataTable)
-    # loc.create_table()
-    loc.create_buffer_table()
-    loc.open_session()
-    loc.dir_scan()
-    # arr = loc.select_time(start, stop)
-    loc.close_session()
-    loc.close_engine()
+    cfg = {"db_name": "test.db",
+           "data_dir": None,
+           "data_table": DataTable,
+           "pressure_table": PrTable,
+           "buffer_table": BufferTable}
+    director = DirectorDb()
+    builder = ConcreteDbBuilder(LocalDb, cfg)
+    director.builder = builder
+    # director.build_full_db()
+    director.build_minimal()
     app_log.info("Create db app ends")

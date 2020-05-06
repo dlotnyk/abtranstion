@@ -22,6 +22,9 @@ class PrTable(Base):
         self.uni_time = uni_time
         self.pressure = pressure
 
+    def __repr__(self):
+        return "Pressure Table"
+
 
 class DataTable(Base):
     """
@@ -44,10 +47,13 @@ class DataTable(Base):
         self.Tmc = Tmc
         self.pressure = pressure
 
+    def __repr__(self):
+        return "Data Table"
+
 
 class BufferTable(Base):
     """
-    ORM table for Raw Data
+    ORM table for Buffer Data
     """
     __tablename__ = buf_table_name
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -63,3 +69,6 @@ class BufferTable(Base):
         self.Q_hec = Q_hec
         self.Q_ic = Q_ic
         self.Tmc = Tmc
+
+    def __repr__(self):
+        return "Buffer Table"
