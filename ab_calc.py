@@ -13,6 +13,7 @@ from grid_data import grid_dict
 app_log = log_settings()
 columns = {"id": [0, 0], "date": [1, "1"], "uni_time": [2, 2], "q_hec": [3, 3.5],
            "q_ic": [4, 4.5], "Tmc": [5, 5.5], "pressure": [6, 6.6]}
+m_size = 40
 
 
 class ABCalc(LocalDb):
@@ -176,13 +177,13 @@ class ABCalc(LocalDb):
             ax1.scatter(arr_dict.get("date"), arr_dict.get("q_hec"), color='green', s=0.5, label='HEC')
             ax1.scatter(arr_dict.get("date"), arr_dict.get("q_ic"), color='blue', s=0.5, label='IC')
             ax1.scatter(arr_dict.get("date")[arr_dict.get("first_idx_hec")],
-                        arr_dict.get("q_hec")[arr_dict.get("first_idx_hec")], color='green', marker='s', s=20)
+                        arr_dict.get("q_hec")[arr_dict.get("first_idx_hec")], color='green', marker='s', s=m_size)
             ax1.scatter(arr_dict.get("date")[arr_dict.get("second_idx_hec")],
-                        arr_dict.get("q_hec")[arr_dict.get("second_idx_hec")], color='green', marker='^', s=20)
+                        arr_dict.get("q_hec")[arr_dict.get("second_idx_hec")], color='green', marker='^', s=m_size)
             ax1.scatter(arr_dict.get("date")[arr_dict.get("first_idx_ic")],
-                        arr_dict.get("q_ic")[arr_dict.get("first_idx_ic")], color='blue', marker='s', s=20)
+                        arr_dict.get("q_ic")[arr_dict.get("first_idx_ic")], color='blue', marker='s', s=m_size)
             ax1.scatter(arr_dict.get("date")[arr_dict.get("second_idx_ic")],
-                        arr_dict.get("q_ic")[arr_dict.get("second_idx_ic")], color='blue', marker='^', s=20)
+                        arr_dict.get("q_ic")[arr_dict.get("second_idx_ic")], color='blue', marker='^', s=m_size)
             ax1.set_xlim(self.start_time, self.stop_time)
             ax1.legend()
             plt.gcf().autofmt_xdate()
@@ -196,13 +197,13 @@ class ABCalc(LocalDb):
             if arr_dict.get("fitted_temp", None) is not None:
                 ax2.scatter(arr_dict.get("date"), arr_dict.get("fitted_temp"), color='red', s=0.5, label="fit")
                 ax2.scatter(arr_dict.get("date")[arr_dict.get("first_idx_hec")],
-                            arr_dict.get("fitted_temp")[arr_dict.get("first_idx_hec")], color='green', marker='s', s=20)
+                            arr_dict.get("fitted_temp")[arr_dict.get("first_idx_hec")], color='green', marker='s', s=m_size)
                 ax2.scatter(arr_dict.get("date")[arr_dict.get("second_idx_hec")],
-                            arr_dict.get("fitted_temp")[arr_dict.get("second_idx_hec")], color='green', marker='^', s=20)
+                            arr_dict.get("fitted_temp")[arr_dict.get("second_idx_hec")], color='green', marker='^', s=m_size)
                 ax2.scatter(arr_dict.get("date")[arr_dict.get("first_idx_ic")],
-                            arr_dict.get("fitted_temp")[arr_dict.get("first_idx_ic")], color='blue', marker='s', s=20)
+                            arr_dict.get("fitted_temp")[arr_dict.get("first_idx_ic")], color='blue', marker='s', s=m_size)
                 ax2.scatter(arr_dict.get("date")[arr_dict.get("second_idx_ic")],
-                            arr_dict.get("fitted_temp")[arr_dict.get("second_idx_ic")], color='blue', marker='^', s=20)
+                            arr_dict.get("fitted_temp")[arr_dict.get("second_idx_ic")], color='blue', marker='^', s=m_size)
             ax2.set_xlim(self.start_time, self.stop_time)
             ax2.legend()
             plt.gcf().autofmt_xdate()
@@ -215,13 +216,13 @@ class ABCalc(LocalDb):
             ax3.scatter(arr_dict.get("date"), arr_dict.get("der_hec"), color='green', s=0.5, label='HEC')
             ax3.scatter(arr_dict.get("date"), arr_dict.get("der_ic"), color='blue', s=0.5, label='IC')
             ax3.scatter(arr_dict.get("date")[arr_dict.get("first_idx_hec")],
-                        arr_dict.get("der_hec")[arr_dict.get("first_idx_hec")], color='green', marker='s', s=20)
+                        arr_dict.get("der_hec")[arr_dict.get("first_idx_hec")], color='green', marker='s', s=m_size)
             ax3.scatter(arr_dict.get("date")[arr_dict.get("second_idx_hec")],
-                        arr_dict.get("der_hec")[arr_dict.get("second_idx_hec")], color='green', marker='^', s=20)
+                        arr_dict.get("der_hec")[arr_dict.get("second_idx_hec")], color='green', marker='^', s=m_size)
             ax3.scatter(arr_dict.get("date")[arr_dict.get("first_idx_ic")],
-                        arr_dict.get("der_ic")[arr_dict.get("first_idx_ic")], color='blue', marker='s', s=20)
+                        arr_dict.get("der_ic")[arr_dict.get("first_idx_ic")], color='blue', marker='s', s=m_size)
             ax3.scatter(arr_dict.get("date")[arr_dict.get("second_idx_ic")],
-                        arr_dict.get("der_ic")[arr_dict.get("second_idx_ic")], color='blue', marker='^', s=20)
+                        arr_dict.get("der_ic")[arr_dict.get("second_idx_ic")], color='blue', marker='^', s=m_size)
             ax3.set_xlim(self.start_time, self.stop_time)
             # ax3.legend()
             plt.gcf().autofmt_xdate()
