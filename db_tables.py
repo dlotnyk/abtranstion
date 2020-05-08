@@ -72,3 +72,8 @@ class BufferTable(Base):
 
     def __repr__(self):
         return "Buffer Table"
+
+
+if __name__ == "__main__":
+    print(repr(BufferTable))
+    print(BufferTable.__dict__)

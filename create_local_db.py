@@ -3,6 +3,7 @@ Created on Mon Jan 14 13:17:13 2019
 
 @author: dlotnyk
 """
+from itertools import count
 import numpy as np
 import sqlalchemy as db
 from sqlalchemy.orm import sessionmaker
@@ -29,6 +30,7 @@ class LocalDb:
     """
     table_name = raw_table_name
     rawdata_tb = None
+    _ids = count(0)
 
     def __init__(self, db_name: str, data_dir=None) -> None:
         """
@@ -37,6 +39,7 @@ class LocalDb:
         :param data_dir: Directory with all data
         """
         try:
+            self.id = next(self._ids)
             self.db_name = db_name
             self.data_dir = data_dir
             parent_path = os.path.dirname(os.getcwd())
@@ -45,9 +48,12 @@ class LocalDb:
             connector = "sqlite:///" + self.db_path
             self.db_engine = db.create_engine(connector)
             self.session = None
-            app_log.debug(f"Engine creates: `{self.db_name}`")
+            app_log.debug(f"Engine creates: `{self.db_name}` for " + repr(self))
         except Exception as ex:
             app_log.error(f"Can not create engine: `{ex}`")
+
+    def __repr__(self):
+        return "LocalDb Class. instance: {}".format(self.id)
 
     def create_table(self):
         """
@@ -127,7 +133,7 @@ class LocalDb:
         try:
             sess = sessionmaker(bind=self.db_engine)
             self.session = sess()
-            app_log.debug(f"Session creates for: `{self.db_name}`")
+            app_log.debug(f"Session creates for: `{self.db_name}` " + repr(self))
         except Exception as ex:
             app_log.error(f"Can not create session: {ex}")
 
@@ -138,7 +144,7 @@ class LocalDb:
         try:
             if self.session is not None:
                 self.session.close()
-                app_log.debug(f"Session `{self.db_name}` closed")
+                app_log.debug(f"Session `{self.db_name}` closed "+ repr(self))
         except Exception as ex:
             app_log.error(f"Can not close session: {ex}")
 
@@ -148,7 +154,7 @@ class LocalDb:
         """
         try:
             self.db_engine.dispose()
-            app_log.debug("db Engine disposed")
+            app_log.debug("db Engine disposed " + repr(self))
         except Exception as ex:
             app_log.error(f"Engine NOT disposed: {ex}")
 

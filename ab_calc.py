@@ -2,6 +2,7 @@ import numpy as np
 from datetime import datetime
 from typing import Dict
 import os
+from itertools import count
 import matplotlib.pyplot as plt
 import scipy.signal as sci
 from matplotlib import markers
@@ -20,11 +21,17 @@ class ABCalc(LocalDb):
     """
     Performs select from db and further calculations
     """
+    _ids = count(0)
+
     def __init__(self, db_name, start_time, stop_time):
+        self.id = next(self._ids)
         self.init_validator(start_time, stop_time)
         super().__init__(db_name)
         self.start_time = start_time
         self.stop_time = stop_time
+
+    def __repr__(self):
+        return "AB Calculate Class. instance: {}".format(self.id)
 
     @staticmethod
     def init_validator(start_time, stop_time):
