@@ -302,8 +302,8 @@ class ABCalc(LocalDb):
 if __name__ == "__main__":
     app_log.info("Calculation app starts.")
     db_name = "ab_data_upd.db"
-    start = datetime(2019, 2, 21, 20, 0)
-    stop = datetime(2019, 2, 22, 2, 0)
+    start = datetime(2019, 4, 6, 19, 10)
+    stop = datetime(2019, 4, 7, 2, 0)
     instance = ABCalc(db_name, start, stop)
     instance.calculate_temperature_sweep()
     # instance.calculate_pressure_sweep()

@@ -16,13 +16,13 @@ grid_dict = ({"pressure_s": 22.5, "hec": {"start_time": datetime(2019, 2, 21, 21
                                          "end_time": datetime(2019, 4, 20, 9, 0)},
               "ic": {"start_time": datetime(2019, 4, 19, 22, 30),
                      "end_time": datetime(2019, 4, 20, 11, 30)}},
-             {"pressure_s": 21.6, "hec": {"start_time": datetime(2019, 4, 6, 19, 15),
+             {"pressure_s": 21.6, "hec": {"start_time": datetime(2019, 4, 6, 19, 10),
                                         "end_time": datetime(2019, 4, 7, 2, 0)},
               "ic": {"start_time": datetime(2019, 4, 6, 20, 0),
                      "end_time": datetime(2019, 4, 7, 10, 0)}},
-             {"pressure_s": 21.4, "hec": {"start_time": datetime(2019, 4, 4, 17, 45),
+             {"pressure_s": 21.4, "hec": {"start_time": datetime(2019, 4, 4, 17, 35),
                                         "end_time": datetime(2019, 4, 4, 22, 0)},
-              "ic": {"start_time": datetime(2019, 4, 4, 18, 30),
+              "ic": {"start_time": datetime(2019, 4, 4, 18, 25),
                      "end_time": datetime(2019, 4, 5, 2, 0)}}
              )
 
